@@ -561,6 +561,18 @@ html,body{background:hsl(var(--background))}
 .add-panel summary{cursor:pointer;font-weight:700;font-size:14px;padding:4px 0}
 .add-panel[open] summary{margin-bottom:14px}
 .creation-frame-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+.tool-fullscreen-open{overflow:hidden!important}
+.creation-frame-wrap.is-fullscreen{position:fixed!important;inset:0!important;z-index:9999;width:100vw!important;height:100dvh!important;min-height:0!important;margin:0!important;border:0!important;border-radius:0!important;background:#fff}
+.creation-frame-wrap.is-fullscreen iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+.tool-fullscreen-trigger{display:none}
+.creation-fullscreen-exit{display:none;position:absolute;top:0;left:0;right:0;z-index:3;width:100%;height:calc(48px + env(safe-area-inset-top,0px));min-height:48px;padding:env(safe-area-inset-top,0px) 14px 0;border:0;border-bottom:1px solid #e2e8f0;border-radius:0;background:#fff;color:#1e293b;text-align:right;font:600 13px system-ui,sans-serif;box-shadow:0 2px 8px rgba(15,23,42,.1)}
+.creation-frame-wrap.is-fullscreen .creation-fullscreen-exit{display:block}
+@media(max-width:900px){
+  .tool-fullscreen-trigger{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:7px 11px;font-size:11px}
+  .creation-workspace-head{height:auto;min-height:54px;flex-wrap:wrap;padding:8px 10px}
+  .creation-frame-wrap.is-fullscreen{padding-bottom:env(safe-area-inset-bottom,0px)}
+  .creation-frame-wrap.is-fullscreen iframe{top:calc(48px + env(safe-area-inset-top,0px));height:calc(100% - 48px - env(safe-area-inset-top,0px))}
+}
 .vocab-table td{vertical-align:top}
 .stat-grid{margin-bottom:15px}
 </style><link rel="manifest" href="manifest.webmanifest">
@@ -683,6 +695,31 @@ function tool(t){const ws=S.words.filter(w=>(w[srcLang]||'').trim());const opt=(
     if(matchMedia('(max-width:900px)').matches)$('#fr').scrollIntoView({behavior:'smooth',block:'start'})};
   if($('#sp'))$('#sp').onclick=()=>{if(!sel.size)return $('#ap').click();$('#ap').click();setTimeout(()=>$('#fr').contentWindow.postMessage({polyglot:'pack'},'*'),150)};
   draw()}
+
+const baseToolWithFullscreen=tool;
+tool=function(t){
+  baseToolWithFullscreen(t);
+  const frameWrap=$('.creation-frame-wrap'),head=$('.creation-workspace-head');
+  if(!frameWrap||!head)return;
+  head.insertAdjacentHTML('beforeend','<button type="button" class="button button-outline tool-fullscreen-trigger" id="toolFullscreen" aria-pressed="false">⛶ เปิดเต็มจอ</button>');
+  frameWrap.insertAdjacentHTML('beforeend','<button type="button" class="creation-fullscreen-exit" id="toolFullscreenExit">✕ กลับหน้าแอป</button>');
+  const enter=$('#toolFullscreen'),exit=$('#toolFullscreenExit');
+  let previousScroll=0;
+  const setFullscreen=open=>{
+    if(open)previousScroll=window.scrollY;
+    frameWrap.classList.toggle('is-fullscreen',open);
+    document.body.classList.toggle('tool-fullscreen-open',open);
+    enter.setAttribute('aria-pressed',String(open));
+    if(open)exit.focus();else{window.scrollTo(0,previousScroll);enter.focus()}
+  };
+  enter.onclick=()=>setFullscreen(true);
+  exit.onclick=()=>setFullscreen(false);
+  if(window.__pgToolFullscreenEsc)removeEventListener('keydown',window.__pgToolFullscreenEsc);
+  window.__pgToolFullscreenEsc=e=>{
+    if(e.key==='Escape'&&frameWrap.classList.contains('is-fullscreen'))setFullscreen(false);
+  };
+  addEventListener('keydown',window.__pgToolFullscreenEsc);
+};
 
 let cq=null,cf=false,cl='th',cb='en';
 function cards(){const d=today();
@@ -1009,6 +1046,42 @@ render();
   render();
 })();`;
   TOOLS.handwriting=inject(TOOLS.handwriting,worksheetCode);
+  const worksheetGroupsCode=`
+(function(){
+  if(!matchMedia('(max-width:900px)').matches)return;
+  const controls=document.querySelector('.controls');
+  if(!controls||controls.dataset.mobileGroups)return;
+  const children=()=>[...controls.children];
+  const range=(start,end)=>{const all=children(),a=all.indexOf(start),b=all.indexOf(end);return a>=0&&b>=a?all.slice(a,b):[]};
+  const styleStart=controls.querySelector('#fontStyle')?.closest('.row');
+  const savedStart=controls.querySelector('#psSel')?.closest('.row')?.previousElementSibling;
+  const wordsStart=controls.querySelector('#preset')?.previousElementSibling;
+  const actions=controls.querySelector('.btn-row');
+  const extras=controls.querySelector('#polyglotWorksheetExtras');
+  if(!styleStart||!savedStart||!wordsStart||!actions)return;
+  const specs=[
+    {title:'1. ตั้งค่าใบงาน',nodes:range(controls.firstElementChild,styleStart),open:true},
+    {title:'2. รายการคำศัพท์',nodes:range(wordsStart,actions),open:false},
+    {title:'🎨 ปรับแต่งแบบฝึก',nodes:[...range(styleStart,savedStart),...(extras?[extras]:[])],open:false},
+    {title:'💾 ชุดตั้งค่าและขนาดกระดาษ',nodes:range(savedStart,wordsStart),open:false}
+  ];
+  const style=document.createElement('style');
+  style.textContent='.pg-mobile-accordion{display:block;margin:0 0 10px;border:1px solid #d6dfd9;border-radius:12px;background:#fff;overflow:hidden}.pg-mobile-accordion>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:50px;padding:12px 14px;background:#f7f8f4;color:#294c40;font-size:14px;font-weight:700;cursor:pointer;list-style:none}.pg-mobile-accordion>summary::-webkit-details-marker{display:none}.pg-mobile-accordion>summary::after{content:\"+\";font-size:20px;line-height:1;color:#58806f}.pg-mobile-accordion[open]>summary::after{content:\"−\"}.pg-mobile-accordion-body{padding:12px;border-top:1px solid #e4e9e4}.pg-mobile-accordion-body>.row:first-child{margin-top:0}body.view-settings .controls>.btn-row{position:sticky;bottom:0;z-index:10;background:#fff;padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 -5px 14px rgba(15,23,42,.08)}';
+  document.head.appendChild(style);
+  specs.forEach(spec=>{
+    const details=document.createElement('details');
+    details.className='pg-mobile-accordion';
+    details.open=spec.open;
+    const summary=document.createElement('summary');summary.textContent=spec.title;
+    const body=document.createElement('div');body.className='pg-mobile-accordion-body';
+    details.append(summary,body);
+    spec.nodes.forEach(node=>body.appendChild(node));
+    controls.appendChild(details);
+  });
+  controls.appendChild(actions);
+  controls.dataset.mobileGroups='ready';
+})();`;
+  TOOLS.handwriting=inject(TOOLS.handwriting,worksheetGroupsCode);
 
   const stickerMarkup='<label style="display:flex;align-items:center;gap:8px;margin:8px 0"><input type="checkbox" id="autoWrap" checked>ตัดบรรทัดข้อความอัตโนมัติ</label><label style="display:flex;align-items:center;gap:8px;margin:8px 0"><input type="checkbox" id="italicText">ตัวเอียง</label>';
   TOOLS.balloons=TOOLS.balloons.replace('<textarea id="text" rows="2">สุขสันต์วันเกิด 🎂</textarea>','<textarea id="text" rows="2">สุขสันต์วันเกิด 🎂</textarea>'+stickerMarkup);
@@ -1052,6 +1125,38 @@ render();
   go();
 })();`;
   TOOLS.balloons=inject(TOOLS.balloons,stickerCode);
+  const stickerGroupsCode=`
+(function(){
+  if(!matchMedia('(max-width:919px)').matches)return;
+  const card=document.querySelector('main>.card');
+  if(!card||card.dataset.mobileGroups)return;
+  const groups=[...card.querySelectorAll(':scope > details')];
+  if(!groups.length)return;
+  const style=document.createElement('style');
+  style.textContent='.pg-sticker-accordion{display:block;margin:10px 0;border:1px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden}.pg-sticker-accordion>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:50px;padding:12px 14px;background:var(--bg);color:var(--acc);font-size:14px;font-weight:700;cursor:pointer;list-style:none}.pg-sticker-accordion>summary::-webkit-details-marker{display:none}.pg-sticker-accordion>summary::after{content:\"+\";font-size:20px;line-height:1}.pg-sticker-accordion[open]>summary::after{content:\"−\"}.pg-sticker-accordion-body{padding:8px 12px 14px;border-top:1px solid var(--line)}.pg-sticker-accordion-body>label:first-child{margin-top:4px}';
+  document.head.appendChild(style);
+  groups.forEach(details=>{
+    const summary=details.querySelector(':scope > summary');
+    if(!summary)return;
+    details.classList.add('pg-sticker-accordion');
+    const body=document.createElement('div');body.className='pg-sticker-accordion-body';
+    [...details.childNodes].filter(node=>node!==summary).forEach(node=>body.appendChild(node));
+    details.appendChild(body);
+    details.open=false;
+  });
+  const templateLabel=card.querySelector('#tpl')?.previousElementSibling;
+  const firstGroup=groups[0];
+  if(templateLabel&&firstGroup){
+    const quick=document.createElement('details');quick.className='pg-sticker-accordion pg-sticker-quick';
+    const summary=document.createElement('summary');summary.textContent='🎉 แม่แบบและคำที่ใช้บ่อย';
+    const body=document.createElement('div');body.className='pg-sticker-accordion-body';
+    quick.append(summary,body);card.insertBefore(quick,templateLabel);
+    let node=templateLabel;
+    while(node&&node!==firstGroup){const next=node.nextSibling;body.appendChild(node);node=next}
+  }
+  card.dataset.mobileGroups='ready';
+})();`;
+  TOOLS.balloons=inject(TOOLS.balloons,stickerGroupsCode);
 
   render();
 })();
