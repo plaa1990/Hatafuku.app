@@ -657,7 +657,7 @@ function vocab(){view.innerHTML=pageHead('Vocabulary','Words you are learning, i
   $('#expc').onclick=async()=>{const ws=S.words.filter(match),f=(w,k)=>{const v=w[k]||'',r=w[k+'r'];return r?v+' ('+r+')':v},ce=v=>'"'+String(v).replace(/"/g,'""')+'"',rows=[['th','en','cn','jp','kr','category'],...ws.map(w=>[w.th,w.en,f(w,'cn'),f(w,'jp'),f(w,'kr'),w.category])];try{await saveFile('polyglot-vocab.csv','\ufeff'+rows.map(r=>r.map(x=>ce(x??'')).join(',')).join('\r\n'));toast(ws.length+' words exported.')}catch(e){if(e&&e.code!=='declined')toast('The file could not be saved.')}};
   $('#imp').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{let d=await readRows(f);if(!Array.isArray(d))d=d.vocabulary||d.words||(d.data&&d.data.vocabulary)||Object.values(d).filter(Array.isArray).flat();d=d.map(w=>{if(!w||typeof w!=='object')return w;const g=(...ks)=>{for(const k of ks)if(w[k]!=null&&w[k]!=='')return w[k];return''};return{...w,th:g('th','ไทย'),en:g('en','อังกฤษ'),cn:g('cn','จีน'),jp:g('jp','ญี่ปุ่น'),kr:g('kr','เกาหลี'),category:g('category','หมวด')}});const key=w=>String(w.th||w.en||'').trim().toLowerCase(),FK=['th','en','cn','jp','kr','category','cnr','jpr','krr'];const have=new Map(S.words.map(x=>[key(x),x]));let n=0,u=0;d.forEach((w,i)=>{if(!w||typeof w!=='object'||!(w.th||w.en||w.cn||w.jp||w.kr))return;const rec=splitR(Object.fromEntries(FK.map(k=>[k,String(w[k]||'')]))),old=have.get(key(rec));if(old){let ch=0;FK.forEach(k=>{if(rec[k]&&rec[k]!==old[k]){old[k]=rec[k];ch=1}});u+=ch;return}const nw={id:'i'+Date.now()+'_'+i,th:'',en:'',cn:'',jp:'',kr:'',category:'',...rec,favorite:!!w.favorite,last:''};have.set(key(nw),nw);S.words.push(nw);n++});save();toast(n||u?`${n} added, ${u} updated.`:'Nothing new or changed in that file.');vocab()}catch(err){toast('Could not read that file. Supported: json, csv, tsv, txt, xml, html, xlsx, xls, ods, numbers.')}};
   list()}
-const match=w=>(!colF||(colF==='-'?!(w.category||'').trim():(w.category||'').trim()===colF))&&(!q.trim()||LANGS.map(l=>w[l[0]]).concat(w.category).some(v=>String(v||'').toLowerCase().includes(q.trim().toLowerCase())));
+const match=w=>(!colF||(colF==='-'?!(w.category||'').trim():(w.category||'').trim()===colF))&&(!q.trim()||LANGS.map(l=>w[l[0]]).concat(w.category,w.jpKana,w.jpKanji,w.jpFurigana,Array.isArray(w.tags)?w.tags:String(w.tags||'').split(',')).some(v=>String(v||'').toLowerCase().includes(q.trim().toLowerCase())));
 function list(){const d=today(),ws=S.words.filter(match).filter(w=>filter==='all'||(filter==='fav'?w.favorite:w.last!==d)),more=ws.length>vlim?`<button class="button button-outline" id="vmore" style="margin:12px auto;display:flex">Show more (${ws.length-vlim} left)</button>`:'';
   $('#vlist').innerHTML=ws.length?`<div class="panel" style="padding:8px 16px"><div class="table-wrap"><table class="vocab-table"><thead><tr><th>Word &amp; meaning</th><th>Other languages</th><th>Level</th><th>Review</th><th style="text-align:right">Actions</th></tr></thead><tbody>${ws.slice(0,vlim).map(w=>`<tr><td class="vc-main"><div class="thai-word">${esc(w.th||w.en)}</div><div class="translation">${esc(w.en)}</div></td><td class="vc-langs"><div class="translation" style="font-size:12px">${[w.cn,w.jp,w.kr].filter(Boolean).map(esc).join(' · ')}</div><div class="translation">${esc(w.category||'Uncategorized')}</div></td><td class="vc-level"><span class="tag">${w.last===d?'reviewed':'learning'}</span></td><td class="vc-review"><button class="button button-soft" data-r="${w.id}">${w.last===d?'Reviewed ✓':'Mark reviewed'}</button></td><td class="vc-actions"><div class="table-actions"><button class="mini-action" data-c="${w.id}" aria-label="Set collection">▤</button><button class="mini-action" data-h="${w.id}" aria-label="Favorite">${w.favorite?'♥':'♡'}</button><button class="mini-action" data-x="${w.id}" aria-label="Delete word">✕</button></div></td></tr>`).join('')}</tbody></table></div>${more}</div>`:'<div class="empty-state"><h3>Nothing here yet</h3><p>No words match. Try another search or add a new word.</p></div>';
   const by=id=>S.words.find(w=>w.id===id);if($('#vmore'))$('#vmore').onclick=()=>{vlim+=300;list()};
@@ -690,7 +690,12 @@ function tool(t){const ws=S.words.filter(w=>(w[srcLang]||'').trim());const opt=(
   $('#cs').oninput=e=>{q=e.target.value;tlim=300;draw()};$('#tc').onchange=e=>{colF=e.target.value;tlim=300;draw()};$('#hl').onchange=e=>{hideLong=e.target.checked;tlim=300;draw()};$('#sl').onchange=e=>{srcLang=e.target.value;sel.clear();tool(t)};if($('#ml'))$('#ml').onchange=e=>meanLang=e.target.value;
   $('#sa').onclick=()=>{ws.filter(match).filter(w=>!isLong(w)).forEach(w=>sel.add(w.id));draw()};$('#sn').onclick=()=>{sel.clear();draw()};
   $('#ap').onclick=()=>{const pick=ws.filter(w=>sel.has(w.id));if(!pick.length)return toast('Choose at least one word.');
-    const lines=pick.map(w=>t==='balloons'?w[srcLang].trim():`${w[srcLang].trim()}|${(w[srcLang+'r']||'').trim()}|${meanLang?(w[meanLang]||'').trim():''}|`);
+    const lines=pick.map(w=>{
+      if(t==='balloons')return w[srcLang].trim();
+      const parts=[w[srcLang].trim(),(w[srcLang+'r']||'').trim(),meanLang?(w[meanLang]||'').trim():'' ,'',''];
+      if(srcLang==='jp')parts.push(w.jpKana||'',w.jpKanji||w.jp||'',w.jpFurigana||w.jpKana||'');
+      return parts.join('|');
+    });
     $('#fr').contentWindow.postMessage({polyglot:'apply',payload:{lines,lang:srcLang}},'*');toast(`${pick.length} ${pick.length>1?'words':'word'} sent to the studio.`);
     if(matchMedia('(max-width:900px)').matches)$('#fr').scrollIntoView({behavior:'smooth',block:'start'})};
   if($('#sp'))$('#sp').onclick=()=>{if(!sel.size)return $('#ap').click();$('#ap').click();setTimeout(()=>$('#fr').contentWindow.postMessage({polyglot:'pack'},'*'),150)};
@@ -1158,6 +1163,8 @@ render();
 })();`;
   TOOLS.balloons=inject(TOOLS.balloons,stickerGroupsCode);
 
-  render();
+render();
 })();
-</script></body></html>
+</script>
+<script src="study-features.js"></script>
+</body></html>
