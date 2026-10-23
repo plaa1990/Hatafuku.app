@@ -604,6 +604,200 @@
 })();`;
     const injectFrame = (html, code) => html.replace('</body>', '<script>' + code + '</' + 'script></body>');
     TOOLS.handwriting = injectFrame(TOOLS.handwriting, japaneseControls);
+    const handwritingLayoutControls = `
+(function(){
+  const $=id=>document.getElementById(id);
+  const pageCount=$('wordsPerPage');
+  const activitySelect=$('worksheetMode');
+  const cardPosition=$('cardPos');
+  if(!pageCount||!activitySelect||!cardPosition||document.getElementById('layoutPresetsWrap'))return;
+
+  if(!pageCount.querySelector('option[value="3"]')){
+    const four=pageCount.querySelector('option[value="4"]');
+    if(four)four.insertAdjacentHTML('beforebegin','<option value="3">3 คำ (กะทัดรัด)</option>');
+  }
+
+  const styleField=$('style').parentElement;
+  const pageCountField=pageCount.parentElement;
+  const fontStyleField=$('fontStyle').parentElement;
+  const traceCardColorWrap=$('traceCardColor').parentElement;
+  const vocabularyPreset=$('preset');
+  const vocabularyPresetLabel=vocabularyPreset?.previousElementSibling;
+  styleField.id='traceStyleField';
+  pageCountField.id='wordsPerPageField';
+  fontStyleField.id='fontStyleField';
+  traceCardColorWrap.id='traceCardColorWrap';
+  if(vocabularyPreset&&vocabularyPresetLabel?.tagName==='LABEL'){
+    const vocabularyPresetWrap=document.createElement('div');
+    vocabularyPresetWrap.id='wordPresetField';
+    vocabularyPresetLabel.parentElement.insertBefore(vocabularyPresetWrap,vocabularyPresetLabel);
+    vocabularyPresetWrap.append(vocabularyPresetLabel,vocabularyPreset);
+  }
+
+  const style=document.createElement('style');
+  style.textContent=[
+    '#layoutPresetsWrap{margin:0 0 14px;padding:12px;border:1px solid #d6dfd9;border-radius:12px;background:#f8faf7}',
+    '#layoutPresetsWrap .preset-heading{display:flex;flex-direction:column;gap:3px;margin-bottom:9px}',
+    '#layoutPresetsWrap .preset-heading strong{font-size:14px;color:#294c40}',
+    '#layoutPresetsWrap .preset-heading small{font-size:11px;color:#607568;line-height:1.45}',
+    '#layoutPresetsWrap .preset-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}',
+    '#layoutPresetsWrap .worksheet-preset{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;width:100%;min-width:0;min-height:58px;padding:8px 10px;border:1px solid #d9e3dc;border-radius:10px;background:#fff;color:#294c40;text-align:left;white-space:normal;font-size:13px}',
+    '#layoutPresetsWrap .worksheet-preset small{color:#607568;font-size:11px}',
+    '#layoutPresetsWrap .worksheet-preset[aria-pressed="true"]{border-color:#285b4f;background:#eef7f1;box-shadow:0 0 0 2px rgba(40,91,79,.12)}',
+    '.worksheet-export-intro{grid-column:1/-1;display:flex;flex-direction:column;gap:3px;padding:0 2px 4px}',
+    '.worksheet-export-intro strong{font-size:14px;color:#374151}',
+    '.worksheet-export-intro span{font-size:12px;color:#64748b;line-height:1.45}',
+    '.btn-row button:not(.btn-reset){min-width:0;white-space:normal;line-height:1.3;overflow-wrap:anywhere}',
+    '.controls [hidden],#layoutPresetsWrap[hidden],#cardOptsWrap [hidden]{display:none!important}',
+    '@media(max-width:600px){#layoutPresetsWrap .preset-grid{gap:6px}#layoutPresetsWrap .worksheet-preset{padding:8px;font-size:12px}}'
+  ].join('');
+  document.head.appendChild(style);
+
+  const presets=[
+    {words:1,position:'left',title:'เต็มหน้า',detail:'1 คำ · ตัวอย่างซ้าย'},
+    {words:1,position:'top',title:'หน้าใหญ่แนวนอน',detail:'1 คำ · ตัวอย่างบน'},
+    {words:2,position:'left',title:'แบบมาตรฐาน',detail:'2 คำ · ตัวอย่างซ้าย'},
+    {words:2,position:'right',title:'ตัวอย่างด้านขวา',detail:'2 คำ · ตัวอย่างขวา'},
+    {words:3,position:'top',title:'แบบกะทัดรัด',detail:'3 คำ · ตัวอย่างบน'},
+    {words:3,position:'bottom',title:'ตัวอย่างด้านล่าง',detail:'3 คำ · ตัวอย่างล่าง'},
+    {words:4,position:'top',title:'ประหยัดกระดาษ',detail:'4 คำ · ตัวอย่างบน'},
+    {words:4,position:'hide',title:'เน้นฝึกเขียน',detail:'4 คำ · ซ่อนตัวอย่าง'}
+  ];
+  const presetWrap=document.createElement('section');
+  presetWrap.id='layoutPresetsWrap';
+  presetWrap.innerHTML='<div class="preset-heading"><strong>ชุดตารางคัดสำเร็จรูป</strong><small>แตะเพื่อเลือกจำนวนคำต่อหน้าและตำแหน่งตัวอย่าง</small></div><div class="preset-grid" role="group" aria-label="ชุดตารางคัดสำเร็จรูป"></div>';
+  const presetGrid=presetWrap.querySelector('.preset-grid');
+  presets.forEach(preset=>{
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='worksheet-preset';
+    button.dataset.words=String(preset.words);
+    button.dataset.position=preset.position;
+    button.setAttribute('aria-pressed','false');
+    button.innerHTML='<strong>'+preset.title+'</strong><small>'+preset.detail+'</small>';
+    presetGrid.appendChild(button);
+  });
+  const activityRow=activitySelect.closest('.row');
+  if(activityRow)activityRow.insertAdjacentElement('beforebegin',presetWrap);
+
+  const exportRow=document.querySelector('.btn-row');
+  if(exportRow){
+    const intro=document.createElement('div');
+    intro.className='worksheet-export-intro';
+    intro.innerHTML='<strong>ส่งออกใบงาน</strong><span>เลือกพิมพ์ หรือดาวน์โหลดเป็น PDF / PNG</span>';
+    exportRow.prepend(intro);
+    const printButton=exportRow.querySelector('button[onclick="window.print()"]');
+    const pngButton=$('btnDownload');
+    const zipButton=$('btnZip');
+    const pdfButton=$('btnPdf');
+    const resetButton=exportRow.querySelector('.btn-reset');
+    if(printButton){
+      printButton.textContent='🖨️ พิมพ์';
+      printButton.title='เปิดหน้าพิมพ์ของเบราว์เซอร์ และเลือกบันทึกเป็น PDF ได้';
+      printButton.setAttribute('aria-label','พิมพ์ หรือเลือกบันทึกเป็น PDF ผ่านเบราว์เซอร์');
+    }
+    if(pdfButton){
+      pdfButton.textContent='📄 ดาวน์โหลด PDF';
+      pdfButton.title='ดาวน์โหลด PDF โดยแต่ละหน้าใบงานถูกบันทึกเป็นภาพ';
+    }
+    if(pngButton){
+      pngButton.textContent='🖼️ PNG แยกหน้า';
+      pngButton.title='ดาวน์โหลดไฟล์ PNG แยกตามหน้า';
+    }
+    if(zipButton){
+      zipButton.textContent='📦 PNG ทุกหน้า (ZIP)';
+      zipButton.title='รวมภาพ PNG ทุกหน้าไว้ในไฟล์ ZIP เดียว';
+    }
+    [printButton,pdfButton,pngButton,zipButton,resetButton].filter(Boolean).forEach(button=>exportRow.appendChild(button));
+  }
+
+  const field=id=>{
+    const element=$(id);
+    if(!element)return null;
+    return element.closest('.checkbox-group')||element.parentElement;
+  };
+  const setField=(id,visible)=>{
+    const wrapper=field(id);
+    if(wrapper)wrapper.hidden=!visible;
+  };
+  const setGroup=(id,visible)=>{
+    const wrapper=$(id);
+    if(wrapper)wrapper.hidden=!visible;
+  };
+  function refreshVisibility(){
+    const activity=activitySelect.value;
+    const traceLayout=$('traceLayout').value;
+    const classicTrace=activity==='trace'&&traceLayout==='classic';
+    const cardTrace=(activity==='trace'&&traceLayout==='cards')||activity==='fill'||activity==='scramble';
+    const matchLike=activity==='match'||activity==='picmatch';
+    const cardOptions=cardTrace||activity==='picmatch'||activity==='compound';
+    const styleMode=$('style').value;
+    const rowStyle=$('traceRowStyle').value;
+
+    setField('style',classicTrace);
+    setField('wordsPerPage',!matchLike);
+    setGroup('traceLayoutWrap',activity==='trace');
+    setGroup('matchPerPageWrap',matchLike);
+    setGroup('traceColsWrap',cardTrace);
+    setGroup('traceCardLangWrap',cardTrace||activity==='picmatch');
+    setGroup('traceRowStyleWrap',cardTrace);
+    setGroup('traceCardColorWrap',cardOptions);
+    setGroup('wordPresetField',activity!=='compound');
+    setGroup('answerKeyRow',matchLike);
+    setGroup('answerKeyAllRow',!matchLike);
+
+    setField('fontStyle',!matchLike);
+    setField('rowCount',!matchLike);
+    setField('colCount',classicTrace);
+    setField('rowGap',classicTrace);
+    setField('letterGap',classicTrace);
+    setField('fontSize',classicTrace);
+    setField('cellSize',classicTrace);
+    setField('textStyle',classicTrace);
+    setField('exampleMode',classicTrace);
+    setField('lineStyle',classicTrace&&styleMode==='lines');
+    setField('cardPos',classicTrace);
+    setField('showStars',classicTrace);
+    setField('showStartDot',classicTrace&&styleMode==='cross');
+    setField('freehandMode',activity==='trace');
+    setField('squareMode',(classicTrace&&styleMode==='cross')||(cardTrace&&rowStyle==='box'));
+    setField('hideDash',classicTrace&&styleMode==='lines');
+    setField('inkSaver',true);
+    setGroup('layoutPresetsWrap',classicTrace);
+
+    document.querySelectorAll('.controls > .row').forEach(row=>{
+      if(row.id==='cardOptsWrap')return;
+      const children=[...row.children].filter(child=>child.matches('div,label'));
+      if(!children.length)return;
+      row.hidden=!children.some(child=>!child.hidden&&getComputedStyle(child).display!=='none');
+    });
+
+    presetGrid.querySelectorAll('.worksheet-preset').forEach(button=>{
+      const selected=classicTrace&&button.dataset.words===pageCount.value&&button.dataset.position===cardPosition.value;
+      button.setAttribute('aria-pressed',String(selected));
+    });
+  }
+
+  presetGrid.addEventListener('click',event=>{
+    const button=event.target.closest('.worksheet-preset');
+    if(!button)return;
+    activitySelect.value='trace';
+    $('traceLayout').value='classic';
+    $('style').value='lines';
+    pageCount.value=button.dataset.words;
+    cardPosition.value=button.dataset.position;
+    render();
+    refreshVisibility();
+  });
+  ['worksheetMode','traceLayout','style','traceRowStyle'].forEach(id=>{
+    $(id).addEventListener('change',refreshVisibility);
+  });
+  pageCount.addEventListener('change',refreshVisibility);
+  cardPosition.addEventListener('change',refreshVisibility);
+  window.addEventListener('load',refreshVisibility);
+  refreshVisibility();
+})();`;
+    TOOLS.handwriting = injectFrame(TOOLS.handwriting, handwritingLayoutControls);
 
     TOOLS.balloons = TOOLS.balloons.replace(
       '<h2>🖼️ ขอบสติกเกอร์ & พื้นหลัง</h2>',
