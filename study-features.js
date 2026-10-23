@@ -108,10 +108,10 @@
     if (!grid) return;
     if (!grid.querySelector('#a-jp-kana')) {
       grid.insertAdjacentHTML('beforeend', `
-        <div class="form-field"><label for="a-jp-kana">Japanese · Hiragana</label><input class="field" id="a-jp-kana" placeholder="ひらがな"></div>
-        <div class="form-field"><label for="a-jp-kanji">Japanese · Kanji</label><input class="field" id="a-jp-kanji" placeholder="漢字"></div>
-        <div class="form-field"><label for="a-jp-furigana">Japanese · Furigana</label><input class="field" id="a-jp-furigana" placeholder="かんじ"></div>
-        <div class="form-field"><label for="a-tags">Tags</label><input class="field" id="a-tags" placeholder="Food, Places, People"></div>`);
+        <div class="form-field"><label for="a-jp-kana">ภาษาญี่ปุ่น · ฮิรางานะ</label><input class="field" id="a-jp-kana" placeholder="ひらがな"></div>
+        <div class="form-field"><label for="a-jp-kanji">ภาษาญี่ปุ่น · คันจิ</label><input class="field" id="a-jp-kanji" placeholder="漢字"></div>
+        <div class="form-field"><label for="a-jp-furigana">ภาษาญี่ปุ่น · ฟุริงานะ</label><input class="field" id="a-jp-furigana" placeholder="かんじ"></div>
+        <div class="form-field"><label for="a-tags">แท็ก</label><input class="field" id="a-tags" placeholder="เช่น อาหาร, สถานที่, ผู้คน"></div>`);
     }
     if (form.dataset.studyFieldsBound) return;
     form.dataset.studyFieldsBound = '1';
@@ -151,8 +151,8 @@
       const select = document.createElement('select');
       select.id = 'vtag';
       select.className = 'select study-filter';
-      select.setAttribute('aria-label', 'Filter by tag');
-      select.innerHTML = '<option value="">All tags</option>' + tags.map(t => `<option value="${escHtml(t)}">${escHtml(t)}</option>`).join('');
+      select.setAttribute('aria-label', 'กรองตามแท็ก');
+      select.innerHTML = '<option value="">ทุกแท็ก</option>' + tags.map(t => `<option value="${escHtml(t)}">${escHtml(t)}</option>`).join('');
       select.value = tagFilter;
       toolbar.appendChild(select);
       select.onchange = () => { tagFilter = select.value; list(); };
@@ -163,7 +163,7 @@
       const quote = value => '"' + String(Array.isArray(value) ? value.join('; ') : (value ?? '')).replace(/"/g, '""') + '"';
       const rows = [keys, ...S.words.filter(match).map(word => keys.map(key => word[key] ?? ''))];
       try { await saveFile('polyglot-vocab.csv', '\ufeff' + rows.map(row => row.map(quote).join(',')).join('\r\n')); toast(`${rows.length - 1} words exported.`); }
-      catch (error) { if (error?.code !== 'declined') toast('The CSV could not be saved.'); }
+      catch (error) { if (error?.code !== 'declined') toast('บันทึกไฟล์ CSV ไม่สำเร็จ'); }
     };
     const visibleRows = document.querySelectorAll('#vlist tr[data-word-id]');
     visibleRows.forEach(row => {
@@ -194,15 +194,15 @@
       word && !reviewedThisSession.has(word.id) && (!word.dueAt || word.dueAt <= localDay()));
     const dueCount = dueWords().length;
     const select = (id, value) => `<select class="select" id="${id}">${LANGS.map(lang => `<option value="${lang[0]}" ${lang[0] === value ? 'selected' : ''}>${lang[1]}</option>`).join('')}</select>`;
-    view.innerHTML = pageHead('Review today', 'Rate how well you remembered each word. SM-2 schedules the next review automatically.') +
+    view.innerHTML = pageHead('ทบทวนวันนี้', 'ให้คะแนนว่าจำแต่ละคำได้แค่ไหน ระบบ SM-2 จะกำหนดวันทบทวนครั้งถัดไปให้อัตโนมัติ') +
       `<section class="panel panel-pad study-panel"><div class="quiz-grid">${select('review-source', reviewSource)}${select('review-target', reviewTarget)}</div>
-       <p class="study-meta" style="margin-top:10px">${dueCount} due today · ${reviewedThisSession.size} reviewed in this session</p>
-       ${current ? `<div class="panel study-card"><div class="eyebrow">Prompt</div><div class="study-front">${escHtml(wordText(current, reviewSource))}</div>
-       ${showReviewAnswer ? `<div class="study-back">${escHtml(wordText(current, reviewTarget) || 'No translation saved')}${current.jpFurigana ? `<div class="study-meta">ふりがな: ${escHtml(current.jpFurigana)}</div>` : ''}</div>` : '<div class="study-meta">Try to recall the meaning before revealing it.</div>'}
-       <div class="study-actions" style="justify-content:center"><button class="button button-outline" id="review-reveal">${showReviewAnswer ? 'Hide answer' : 'Show answer'}</button></div>
-       ${showReviewAnswer ? `<div class="study-rating"><button class="button button-outline" data-quality="0">Again</button><button class="button button-outline" data-quality="3">Hard</button><button class="button button-primary" data-quality="4">Good</button><button class="button button-soft" data-quality="5">Easy</button></div>` : ''}
-       <div class="study-meta">Next interval is calculated from your rating.</div></div>` :
-       `<div class="empty-state"><h3>${dueCount ? 'Review session complete 🎉' : 'Nothing due right now 🎉'}</h3><p>${dueCount ? `${dueCount} word(s) remain due. You can start another round or finish for now.` : 'Your next reviews will appear here when scheduled.'}</p><div class="study-actions" style="justify-content:center"><button class="button button-outline" id="review-restart">Start another round</button><a class="button button-primary" href="#vocab">Open vocabulary</a></div></div>`}
+       <p class="study-meta" style="margin-top:10px">ต้องทบทวนวันนี้ ${dueCount} คำ · ทบทวนในรอบนี้แล้ว ${reviewedThisSession.size} คำ</p>
+       ${current ? `<div class="panel study-card"><div class="eyebrow">โจทย์</div><div class="study-front">${escHtml(wordText(current, reviewSource))}</div>
+       ${showReviewAnswer ? `<div class="study-back">${escHtml(wordText(current, reviewTarget) || 'ยังไม่มีคำแปลที่บันทึกไว้')}${current.jpFurigana ? `<div class="study-meta">ふりがな: ${escHtml(current.jpFurigana)}</div>` : ''}</div>` : '<div class="study-meta">ลองนึกความหมายก่อนกดดูเฉลย</div>'}
+       <div class="study-actions" style="justify-content:center"><button class="button button-outline" id="review-reveal">${showReviewAnswer ? 'ซ่อนเฉลย' : 'ดูเฉลย'}</button></div>
+       ${showReviewAnswer ? `<div class="study-rating"><button class="button button-outline" data-quality="0">จำไม่ได้</button><button class="button button-outline" data-quality="3">ยาก</button><button class="button button-primary" data-quality="4">จำได้</button><button class="button button-soft" data-quality="5">ง่ายมาก</button></div>` : ''}
+       <div class="study-meta">ระบบจะคำนวณวันทบทวนถัดไปจากคะแนนที่คุณให้</div></div>` :
+       `<div class="empty-state"><h3>${dueCount ? 'ทบทวนครบรอบนี้แล้ว 🎉' : 'ตอนนี้ไม่มีคำที่ต้องทบทวน 🎉'}</h3><p>${dueCount ? `ยังเหลืออีก ${dueCount} คำ จะเริ่มรอบใหม่หรือพักก่อนก็ได้` : 'คำที่ถึงกำหนดทบทวนจะมาแสดงที่นี่'}</p><div class="study-actions" style="justify-content:center"><button class="button button-outline" id="review-restart">เริ่มรอบใหม่</button><a class="button button-primary" href="#vocab">เปิดคลังคำศัพท์</a></div></div>`}
        </section>`;
     document.querySelector('#review-source').onchange = event => { reviewSource = event.target.value; reviewView(); };
     document.querySelector('#review-target').onchange = event => { reviewTarget = event.target.value; reviewView(); };
@@ -228,12 +228,12 @@
     return result;
   }
   function quizView() {
-    const modes = [['spell','Spell the word'],['mcq','Four choices'],['match','Match pairs']];
-    view.innerHTML = pageHead('Quiz mode', 'Practice from your own word list — spelling, multiple choice, and matching work offline.') +
+    const modes = [['spell','พิมพ์คำตอบ'],['mcq','เลือก 4 ตัวเลือก'],['match','จับคู่คำ']];
+    view.innerHTML = pageHead('แบบทดสอบ', 'ฝึกจากคำศัพท์ของคุณเอง ทั้งพิมพ์คำตอบ เลือกตอบ และจับคู่ ใช้งานออฟไลน์ได้') +
       `<section class="panel panel-pad study-panel"><div class="study-actions">${modes.map(([id, label]) => `<button class="button ${quizState?.mode === id ? 'button-primary' : 'button-outline'}" data-mode="${id}">${label}</button>`).join('')}</div>
-      <div class="quiz-grid" style="margin-top:14px"><div><label class="section-kicker" for="quiz-src">Prompt language</label><select class="select" id="quiz-src">${LANGS.map(lang => `<option value="${lang[0]}" ${lang[0] === (quizState?.src || 'jp') ? 'selected' : ''}>${lang[1]}</option>`).join('')}</select></div>
-      <div><label class="section-kicker" for="quiz-dst">Answer language</label><select class="select" id="quiz-dst">${LANGS.map(lang => `<option value="${lang[0]}" ${lang[0] === (quizState?.dst || 'en') ? 'selected' : ''}>${lang[1]}</option>`).join('')}</select></div></div>
-      <div class="study-actions"><button class="button button-primary" id="quiz-start">Start / restart quiz</button></div>
+      <div class="quiz-grid" style="margin-top:14px"><div><label class="section-kicker" for="quiz-src">ภาษาของโจทย์</label><select class="select" id="quiz-src">${LANGS.map(lang => `<option value="${lang[0]}" ${lang[0] === (quizState?.src || 'jp') ? 'selected' : ''}>${lang[1]}</option>`).join('')}</select></div>
+      <div><label class="section-kicker" for="quiz-dst">ภาษาของคำตอบ</label><select class="select" id="quiz-dst">${LANGS.map(lang => `<option value="${lang[0]}" ${lang[0] === (quizState?.dst || 'en') ? 'selected' : ''}>${lang[1]}</option>`).join('')}</select></div></div>
+      <div class="study-actions"><button class="button button-primary" id="quiz-start">เริ่ม / เริ่มใหม่</button></div>
       <div id="quiz-round"></div></section>`;
     document.querySelectorAll('[data-mode]').forEach(button => button.onclick = () => {
       quizState = { ...(quizState || {}), mode: button.dataset.mode };
@@ -242,7 +242,7 @@
     document.querySelector('#quiz-start').onclick = () => {
       const src = document.querySelector('#quiz-src').value, dst = document.querySelector('#quiz-dst').value;
       const eligible = S.words.filter(word => wordText(word, src) && wordText(word, dst));
-      if (eligible.length < 2) { toast('Add at least two words with both selected translations.'); return; }
+      if (eligible.length < 2) { toast('ต้องมีคำศัพท์อย่างน้อย 2 คำที่มีทั้งสองภาษาที่เลือก'); return; }
       quizState = { mode: quizState?.mode || 'spell', src, dst, words: shuffle(eligible).slice(0, Math.min(10, eligible.length)), index: 0, score: 0, selectedLeft: null, selectedRight: null, matched: new Set(), round: 0 };
       renderQuizRound();
     };
@@ -254,19 +254,19 @@
     const word = quizState.words[quizState.index];
     if (quizState.mode === 'match') return renderMatchRound(root);
     if (!word) {
-      root.innerHTML = `<div class="empty-state"><h3>Round complete</h3><p>Score: ${quizState.score} / ${quizState.words.length}</p><button class="button button-outline" id="quiz-again">Try another round</button></div>`;
+      root.innerHTML = `<div class="empty-state"><h3>จบรอบแล้ว</h3><p>คะแนน ${quizState.score} / ${quizState.words.length}</p><button class="button button-outline" id="quiz-again">เล่นอีกรอบ</button></div>`;
       root.querySelector('#quiz-again').onclick = () => { quizState = null; quizView(); };
       return;
     }
     const prompt = wordText(word, quizState.src), answer = wordText(word, quizState.dst);
-    const progress = `<p class="study-meta">Question ${quizState.index + 1} / ${quizState.words.length} · Score ${quizState.score}</p>`;
+    const progress = `<p class="study-meta">ข้อ ${quizState.index + 1} / ${quizState.words.length} · คะแนน ${quizState.score}</p>`;
     if (quizState.mode === 'spell') {
-      root.innerHTML = `${progress}<div class="panel study-card"><div class="study-front">${escHtml(prompt)}</div><form id="spell-form"><input class="field" id="spell-answer" autocomplete="off" placeholder="Type the translation"><button class="button button-primary" style="margin-top:12px">Check</button></form><div id="spell-result" class="study-meta"></div></div>`;
+      root.innerHTML = `${progress}<div class="panel study-card"><div class="study-front">${escHtml(prompt)}</div><form id="spell-form"><input class="field" id="spell-answer" autocomplete="off" placeholder="พิมพ์คำแปล"><button class="button button-primary" style="margin-top:12px">ตรวจคำตอบ</button></form><div id="spell-result" class="study-meta"></div></div>`;
       root.querySelector('#spell-form').onsubmit = event => {
         event.preventDefault();
         const typed = root.querySelector('#spell-answer').value.trim().toLocaleLowerCase();
         const correct = typed === answer.trim().toLocaleLowerCase();
-        root.querySelector('#spell-result').innerHTML = `${correct ? 'Correct ✓' : 'Answer: ' + escHtml(answer)} <button class="button button-outline" id="spell-next">Next</button>`;
+        root.querySelector('#spell-result').innerHTML = `${correct ? 'ถูกต้อง ✓' : 'เฉลย: ' + escHtml(answer)} <button class="button button-outline" id="spell-next">ข้อต่อไป</button>`;
         if (correct) { quizState.score++; markStudy(word, 4, 'quiz'); } else word.quizWrong = (word.quizWrong || 0) + 1;
         save();
         root.querySelector('#spell-next').onclick = () => { quizState.index++; renderQuizRound(); };
@@ -279,7 +279,7 @@
         const correct = choices[i].id === word.id;
         if (correct) { quizState.score++; markStudy(word, 4, 'quiz'); } else word.quizWrong = (word.quizWrong || 0) + 1;
         save();
-        root.querySelector('#mcq-result').innerHTML = `${correct ? 'Correct ✓' : `Answer: ${escHtml(answer)}`} <button class="button button-outline" id="mcq-next">Next</button>`;
+        root.querySelector('#mcq-result').innerHTML = `${correct ? 'ถูกต้อง ✓' : `เฉลย: ${escHtml(answer)}`} <button class="button button-outline" id="mcq-next">ข้อต่อไป</button>`;
         root.querySelector('#mcq-next').onclick = () => { quizState.index++; renderQuizRound(); };
       });
     }
@@ -287,7 +287,7 @@
   function renderMatchRound(root) {
     if (!quizState.pairs || quizState.index >= quizState.pairs.length) {
       const available = S.words.filter(word => wordText(word, quizState.src) && wordText(word, quizState.dst));
-      if (available.length < 2) { root.innerHTML = '<p class="study-meta">Add more translated words to play matching.</p>'; return; }
+      if (available.length < 2) { root.innerHTML = '<p class="study-meta">เพิ่มคำศัพท์ที่มีคำแปลอีกหน่อยเพื่อเล่นจับคู่</p>'; return; }
       quizState.pairs = shuffle(available).slice(0, Math.min(4, available.length));
       quizState.rightOrder = shuffle(quizState.pairs);
       quizState.index = 0;
@@ -295,10 +295,10 @@
       quizState.selectedLeft = null;
       quizState.selectedRight = null;
     }
-    root.innerHTML = `<p class="study-meta">Match the pairs · Score ${quizState.score}</p><div class="quiz-match">
+    root.innerHTML = `<p class="study-meta">จับคู่คำให้ถูก · คะแนน ${quizState.score}</p><div class="quiz-match">
       <div>${quizState.pairs.map(item => `<button class="button button-outline ${quizState.matched.has(item.id) ? 'matched' : ''} ${quizState.selectedLeft === item.id ? 'selected' : ''}" data-left="${escHtml(item.id)}">${escHtml(wordText(item, quizState.src))}</button>`).join('')}</div>
       <div>${quizState.rightOrder.map(item => `<button class="button button-outline ${quizState.matched.has(item.id) ? 'matched' : ''} ${quizState.selectedRight === item.id ? 'selected' : ''}" data-right="${escHtml(item.id)}">${escHtml(wordText(item, quizState.dst))}</button>`).join('')}</div></div>
-      <div class="study-actions"><button class="button button-primary" id="match-next" ${quizState.matched.size < quizState.pairs.length ? 'disabled' : ''}>Next set</button></div>`;
+      <div class="study-actions"><button class="button button-primary" id="match-next" ${quizState.matched.size < quizState.pairs.length ? 'disabled' : ''}>ชุดต่อไป</button></div>`;
     root.querySelectorAll('[data-left]').forEach(button => button.onclick = () => { quizState.selectedLeft = button.dataset.left; checkMatch(root); });
     root.querySelectorAll('[data-right]').forEach(button => button.onclick = () => { quizState.selectedRight = button.dataset.right; checkMatch(root); });
     root.querySelector('#match-next').onclick = () => { quizState.pairs = null; quizState.index = 0; renderMatchRound(root); };
@@ -332,16 +332,16 @@
       ['決める','きめる','to decide','ตัดสินใจ'],['続ける','つづける','to continue','ทำต่อ'],['間に合う','まにあう','to be in time','ทันเวลา'],['心配','しんぱい','worry; concern','กังวล'],
       ['残念','ざんねん','unfortunate','น่าเสียดาย'],['場所','ばしょ','place','สถานที่'],['最近','さいきん','recently','เมื่อเร็ว ๆ นี้'],['特別','とくべつ','special','พิเศษ']
     ]},
-    { id: 'daily-japanese', name: 'Everyday Japanese · starter', level: 'Daily', category: 'Daily Japanese', rows: [
+    { id: 'daily-japanese', name: 'ญี่ปุ่นในชีวิตประจำวัน · ชุดเริ่มต้น', level: 'ชีวิตประจำวัน', category: 'ญี่ปุ่นในชีวิตประจำวัน', rows: [
       ['おはよう','おはよう','good morning','สวัสดีตอนเช้า'],['お願いします','おねがいします','please','กรุณา'],['ありがとう','ありがとう','thank you','ขอบคุณ'],['すみません','すみません','excuse me; sorry','ขอโทษ'],
       ['駅','えき','station','สถานี'],['病院','びょういん','hospital','โรงพยาบาล'],['食堂','しょくどう','cafeteria','โรงอาหาร'],['切符','きっぷ','ticket','ตั๋ว'],
       ['いくら','いくら','how much','ราคาเท่าไร'],['おいしい','おいしい','delicious','อร่อย'],['家族','かぞく','family','ครอบครัว'],['仕事','しごと','work; job','งาน']
     ]}
   ];
   function packsView() {
-    view.innerHTML = pageHead('Word packs', 'Import a starter set with one click. JLPT lists are compact samples, ready for you to expand.') +
-      `<div class="dashboard-grid">${PACKS.map(pack => `<section class="panel panel-pad"><div class="eyebrow">${escHtml(pack.level)}</div><h2 style="margin:6px 0">${escHtml(pack.name)}</h2><p class="subtitle">${pack.rows.length} Japanese words with hiragana, English, and Thai meanings.</p><button class="button button-primary" data-pack="${pack.id}">Import this pack</button></section>`).join('')}
-      <section class="panel panel-pad"><h2>Import your own file</h2><p class="subtitle">Use Vocabulary → Import or update for CSV / JSON backups and JMdict-derived word lists.</p><a class="button button-outline" href="#vocab">Open vocabulary</a></section></div>`;
+    view.innerHTML = pageHead('ชุดคำศัพท์', 'นำเข้าชุดเริ่มต้นได้ในคลิกเดียว ชุด JLPT เป็นตัวอย่างขนาดย่อมที่คุณเพิ่มเองต่อได้') +
+      `<div class="dashboard-grid">${PACKS.map(pack => `<section class="panel panel-pad"><div class="eyebrow">${escHtml(pack.level)}</div><h2 style="margin:6px 0">${escHtml(pack.name)}</h2><p class="subtitle">คำศัพท์ภาษาญี่ปุ่น ${pack.rows.length} คำ พร้อมฮิรางานะ ความหมายอังกฤษและไทย</p><button class="button button-primary" data-pack="${pack.id}">นำเข้าชุดนี้</button></section>`).join('')}
+      <section class="panel panel-pad"><h2>นำเข้าไฟล์ของคุณเอง</h2><p class="subtitle">ไปที่ คลังคำศัพท์ → นำเข้าไฟล์ เพื่อนำเข้าไฟล์สำรอง CSV / JSON หรือรายการคำจาก JMdict</p><a class="button button-outline" href="#vocab">เปิดคลังคำศัพท์</a></section></div>`;
     view.querySelectorAll('[data-pack]').forEach(button => button.onclick = () => {
       const pack = PACKS.find(item => item.id === button.dataset.pack);
       let added = 0;
@@ -385,15 +385,15 @@
     const weak = [...S.words].map(word => ({ word, count: (Number(word.lapses) || 0) + (Number(word.quizWrong) || 0) }))
       .filter(item => item.count).sort((a, b) => b.count - a.count).slice(0, 8);
     const totalReviews = Object.values(S.studyLog).reduce((sum, count) => sum + (Number(count) || 0), 0);
-    view.innerHTML = pageHead('Learning plan & stats', 'A quick view of your study streak, review volume, and words that need another pass.') +
-      `<div class="stat-grid"><div class="panel stat-card"><div class="stat-top">Learning streak</div><div class="stat-value">${streak} day${streak === 1 ? '' : 's'}</div><div class="stat-foot">Based on recorded reviews and quiz practice</div></div>
-      <div class="panel stat-card"><div class="stat-top">Total study events</div><div class="stat-value">${totalReviews}</div><div class="stat-foot">Reviews and correct quiz answers</div></div>
-      <div class="panel stat-card"><div class="stat-top">Due now</div><div class="stat-value">${dueWords().length}</div><div class="stat-foot">Scheduled by SM-2</div></div>
-      <div class="panel stat-card"><div class="stat-top">Vocabulary size</div><div class="stat-value">${S.words.length}</div><div class="stat-foot">Words stored on this device</div></div></div>
-      <section class="panel panel-pad"><div class="section-title"><h2>Words studied · last 14 days</h2><a class="button button-soft" href="#review">Start review</a></div>
-      <div class="study-bars" role="img" aria-label="Daily reviews for the last 14 days">${days.map(day => `<div class="study-bar-col" title="${day.key}: ${day.count}"><span class="study-bar-count">${day.count || ''}</span><div class="study-bar" style="height:${Math.max(2, day.count / max * 90)}%"></div><span class="study-bar-label">${day.key.slice(5)}</span></div>`).join('')}</div></section>
-      <section class="panel panel-pad" style="margin-top:15px"><div class="section-title"><h2>Often missed</h2><span class="tag">${weak.length} words</span></div>
-      ${weak.length ? `<div class="review-list">${weak.map(item => `<div class="review-row"><div><div class="word-main">${escHtml(item.word.jp || item.word.th || item.word.en)}</div><div class="word-meta">${escHtml(item.word.en || item.word.th || '')}</div></div><span class="tag">${item.count} miss${item.count === 1 ? '' : 'es'}</span></div>`).join('')}</div>` : '<p class="subtitle">No missed words recorded yet. Quiz and review results will build this list.</p>'}</section>`;
+    view.innerHTML = pageHead('แผนการเรียนและสถิติ', 'ดูสตรีกการเรียน ปริมาณการทบทวน และคำที่ควรทบทวนซ้ำ') +
+      `<div class="stat-grid"><div class="panel stat-card"><div class="stat-top">เรียนติดต่อกัน</div><div class="stat-value">${streak} วัน</div><div class="stat-foot">นับจากการทบทวนและแบบทดสอบที่บันทึกไว้</div></div>
+      <div class="panel stat-card"><div class="stat-top">จำนวนครั้งที่ฝึกทั้งหมด</div><div class="stat-value">${totalReviews}</div><div class="stat-foot">การทบทวนและข้อสอบที่ตอบถูก</div></div>
+      <div class="panel stat-card"><div class="stat-top">ถึงกำหนดทบทวน</div><div class="stat-value">${dueWords().length}</div><div class="stat-foot">กำหนดโดย SM-2</div></div>
+      <div class="panel stat-card"><div class="stat-top">จำนวนคำศัพท์</div><div class="stat-value">${S.words.length}</div><div class="stat-foot">คำที่เก็บไว้ในเครื่องนี้</div></div></div>
+      <section class="panel panel-pad"><div class="section-title"><h2>คำที่ฝึก · 14 วันที่ผ่านมา</h2><a class="button button-soft" href="#review">เริ่มทบทวน</a></div>
+      <div class="study-bars" role="img" aria-label="จำนวนการทบทวนรายวัน 14 วันล่าสุด">${days.map(day => `<div class="study-bar-col" title="${day.key}: ${day.count}"><span class="study-bar-count">${day.count || ''}</span><div class="study-bar" style="height:${Math.max(2, day.count / max * 90)}%"></div><span class="study-bar-label">${day.key.slice(5)}</span></div>`).join('')}</div></section>
+      <section class="panel panel-pad" style="margin-top:15px"><div class="section-title"><h2>คำที่มักตอบผิด</h2><span class="tag">${weak.length} คำ</span></div>
+      ${weak.length ? `<div class="review-list">${weak.map(item => `<div class="review-row"><div><div class="word-main">${escHtml(item.word.jp || item.word.th || item.word.en)}</div><div class="word-meta">${escHtml(item.word.en || item.word.th || '')}</div></div><span class="tag">ผิด ${item.count} ครั้ง</span></div>`).join('')}</div>` : '<p class="subtitle">ยังไม่มีคำที่ตอบผิด ผลจากแบบทดสอบและการทบทวนจะมาสร้างรายการนี้</p>'}</section>`;
   }
 
   // Offline dictionary: small starter set plus a browser-side JMdict JSON importer.
@@ -403,7 +403,7 @@
     ['本','ほん','book','หนังสือ'],['今日','きょう','today','วันนี้'],['明日','あした','tomorrow','พรุ่งนี้'],['ありがとう','ありがとう','thank you','ขอบคุณ'],['こんにちは','こんにちは','hello; good afternoon','สวัสดี'],
     ['家族','かぞく','family','ครอบครัว'],['人','ひと','person','คน'],['大きい','おおきい','big; large','ใหญ่'],['小さい','ちいさい','small','เล็ก'],['おいしい','おいしい','delicious','อร่อย'],
     ['時間','じかん','time; hour','เวลา'],['仕事','しごと','work; job','งาน'],['場所','ばしょ','place','สถานที่'],['電車','でんしゃ','train','รถไฟ'],['食べ物','たべもの','food','อาหาร']
-  ].map((row, i) => ({ id: `starter-${i}`, headword: row[0], reading: row[1], meanings: [row[2], row[3]], source: 'Starter dictionary' }));
+  ].map((row, i) => ({ id: `starter-${i}`, headword: row[0], reading: row[1], meanings: [row[2], row[3]], source: 'พจนานุกรมเริ่มต้น' }));
   const DICT_DB = 'polyglot-offline-dictionary';
   let dictionaryEntries = [];
   let dictionaryReady = false;
@@ -485,10 +485,10 @@
     }).filter(entry => entry.headword && entry.meanings.length);
   }
   function dictionaryView() {
-    view.innerHTML = pageHead('Offline dictionary', 'Search locally saved Japanese entries. Import a JMdict-derived JSON file to add a larger dictionary; imported data is kept in IndexedDB on this device.') +
-      `<section class="panel panel-pad study-panel"><div class="study-notice">Starter dictionary: ${DICT_STARTER.length} common entries. A complete JMdict dataset is not bundled; use the importer below to add your licensed JMdict JSON export for offline lookup.</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"><input class="field" id="dict-query" placeholder="Search Japanese, reading, English, or Thai" aria-label="Search offline dictionary" style="flex:1;min-width:220px"><label class="button button-outline" for="dict-file" style="margin:0">Import JMdict JSON</label><input id="dict-file" type="file" accept=".json,application/json" hidden></div>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px"><select class="select" id="dict-mode" style="max-width:180px"><option value="merge">Merge entries</option><option value="replace">Replace dictionary</option></select><span class="study-meta" id="dict-status">Loading local dictionary…</span></div><div class="dict-results" id="dict-results"></div></section>`;
+    view.innerHTML = pageHead('พจนานุกรมออฟไลน์', 'ค้นหาคำภาษาญี่ปุ่นที่เก็บไว้ในเครื่อง นำเข้าไฟล์ JSON จาก JMdict เพื่อเพิ่มคำได้มากขึ้น ข้อมูลที่นำเข้าจะเก็บใน IndexedDB ของเครื่องนี้') +
+      `<section class="panel panel-pad study-panel"><div class="study-notice">พจนานุกรมเริ่มต้นมี ${DICT_STARTER.length} คำที่ใช้บ่อย ไม่ได้แนบ JMdict ฉบับเต็มมาด้วย หากมีไฟล์ JMdict JSON ที่ได้รับอนุญาตให้ใช้ ให้นำเข้าด้านล่างเพื่อค้นหาแบบออฟไลน์</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"><input class="field" id="dict-query" placeholder="ค้นหา ญี่ปุ่น / คำอ่าน / อังกฤษ / ไทย" aria-label="ค้นหาในพจนานุกรมออฟไลน์" style="flex:1;min-width:220px"><label class="button button-outline" for="dict-file" style="margin:0">นำเข้า JMdict JSON</label><input id="dict-file" type="file" accept=".json,application/json" hidden></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px"><select class="select" id="dict-mode" style="max-width:180px"><option value="merge">รวมกับของเดิม</option><option value="replace">แทนที่ทั้งหมด</option></select><span class="study-meta" id="dict-status">กำลังโหลดพจนานุกรม…</span></div><div class="dict-results" id="dict-results"></div></section>`;
     const input = document.querySelector('#dict-query');
     const fileInput = document.querySelector('#dict-file');
     const status = document.querySelector('#dict-status');
@@ -496,8 +496,8 @@
     const renderEntries = () => {
       const query = input.value.trim().toLocaleLowerCase();
       const found = dictionaryEntries.filter(entry => !query || [entry.headword, entry.reading, ...(entry.meanings || [])].some(value => String(value || '').toLocaleLowerCase().includes(query))).slice(0, 100);
-      status.textContent = `${dictionaryEntries.length.toLocaleString()} entries stored locally · ${found.length} shown`;
-      results.innerHTML = found.length ? found.map(entry => `<article class="panel dict-entry"><span class="dict-head">${escHtml(entry.headword)}</span><span class="dict-reading">${escHtml(entry.reading || '')}</span><div class="dict-meaning">${(entry.meanings || []).map(escHtml).join(' · ')}</div></article>`).join('') : '<div class="empty-state"><h3>No matching entries</h3><p>Try another spelling or import a JMdict JSON file.</p></div>';
+      status.textContent = `เก็บไว้ในเครื่อง ${dictionaryEntries.length.toLocaleString()} รายการ · แสดง ${found.length} รายการ`;
+      results.innerHTML = found.length ? found.map(entry => `<article class="panel dict-entry"><span class="dict-head">${escHtml(entry.headword)}</span><span class="dict-reading">${escHtml(entry.reading || '')}</span><div class="dict-meaning">${(entry.meanings || []).map(escHtml).join(' · ')}</div></article>`).join('') : '<div class="empty-state"><h3>ไม่พบรายการที่ตรงกัน</h3><p>ลองสะกดแบบอื่น หรือนำเข้าไฟล์ JMdict JSON</p></div>';
     };
     input.oninput = renderEntries;
     fileInput.disabled = true;
@@ -508,11 +508,11 @@
     fileInput.onchange = async event => {
       const file = event.target.files?.[0];
       if (!file) return;
-      if (!dictionaryReady) { toast('Wait for the local dictionary to finish loading.'); return; }
-      status.textContent = 'Reading and saving dictionary…';
+      if (!dictionaryReady) { toast('รอให้พจนานุกรมโหลดเสร็จก่อนนะ'); return; }
+      status.textContent = 'กำลังอ่านและบันทึกพจนานุกรม…';
       try {
         const parsed = normalizeJMdict(JSON.parse(await file.text()));
-        if (!parsed.length) throw new Error('No entries could be read');
+        if (!parsed.length) throw new Error('อ่านรายการไม่ได้เลย');
         const replace = document.querySelector('#dict-mode').value === 'replace';
         const operation = ++dictionaryOperation;
         await dictionaryWrite(parsed, replace);
@@ -524,19 +524,19 @@
           dictionaryEntries = [...byHeadword.values()];
         }
         dictionaryReady = true;
-        toast(`${parsed.length.toLocaleString()} dictionary entries imported.`);
+        toast(`นำเข้าพจนานุกรม ${parsed.length.toLocaleString()} รายการแล้ว`);
         renderEntries();
       } catch (error) {
-        status.textContent = 'Import failed. Check that the JSON is a JMdict / JMdict-Simplified export.';
-        toast('Could not import that dictionary JSON.');
+        status.textContent = 'นำเข้าไม่สำเร็จ ตรวจสอบว่าเป็นไฟล์ JSON จาก JMdict / JMdict-Simplified';
+        toast('นำเข้าไฟล์พจนานุกรมนี้ไม่ได้');
       }
       event.target.value = '';
     };
   }
 
   const EXTRA_ROUTES = [
-    ['review', 'Review today'], ['quiz', 'Quiz mode'], ['dictionary', 'Offline dictionary'],
-    ['stats', 'Learning plan'], ['packs', 'Word packs']
+    ['review', 'ทบทวนวันนี้'], ['quiz', 'แบบทดสอบ'], ['dictionary', 'พจนานุกรมออฟไลน์'],
+    ['stats', 'แผนการเรียนและสถิติ'], ['packs', 'ชุดคำศัพท์']
   ];
   EXTRA_ROUTES.forEach(([id, label]) => { if (!VIEWS.some(item => item[0] === id)) VIEWS.push([id, label]); });
   const previousRender = render;
@@ -564,7 +564,7 @@
 (function(){
   const extras=document.getElementById('polyglotWorksheetExtras');
   if(!extras||document.getElementById('pgJapaneseWorksheetControls'))return;
-  extras.insertAdjacentHTML('beforeend','<hr style="margin:16px 0;border:0;border-top:1px solid #d8e0dc"><h4 style="margin:0 0 8px">🇯🇵 Japanese worksheet</h4><label>Show Japanese as</label><select id="pgJpDisplay"><option value="kana">Hiragana</option><option value="kanji">Kanji</option><option value="furigana">Kanji + furigana</option></select><label>Free Japanese font</label><select id="pgJpFont"><option value="noto">Noto Sans JP</option><option value="klee">Klee One</option><option value="yomogi">Yomogi</option></select><p style="font-size:12px;color:#64748b;margin-top:6px">Uses Japanese fields from your vocabulary. Font downloads from Google Fonts when online; system fonts are used offline.</p>');
+  extras.insertAdjacentHTML('beforeend','<hr style="margin:16px 0;border:0;border-top:1px solid #d8e0dc"><h4 style="margin:0 0 8px">🇯🇵 ใบงานภาษาญี่ปุ่น</h4><label>แสดงภาษาญี่ปุ่นเป็น</label><select id="pgJpDisplay"><option value="kana">ฮิรางานะ</option><option value="kanji">คันจิ</option><option value="furigana">คันจิ + ฟุริงานะ</option></select><label>ฟอนต์ญี่ปุ่นฟรี</label><select id="pgJpFont"><option value="noto">Noto Sans JP</option><option value="klee">Klee One</option><option value="yomogi">Yomogi</option></select><p style="font-size:12px;color:#64748b;margin-top:6px">ใช้ข้อมูลภาษาญี่ปุ่นจากคลังคำศัพท์ ฟอนต์โหลดจาก Google Fonts เมื่อออนไลน์ และใช้ฟอนต์ของระบบเมื่อออฟไลน์</p>');
   const display=document.getElementById('pgJpDisplay'),font=document.getElementById('pgJpFont');
   const storageKey='pgJapaneseWorksheetPrefs';
   try{const p=JSON.parse(localStorage.getItem(storageKey)||'{}');if(p.display)display.value=p.display;if(p.font)font.value=p.font}catch(e){}
