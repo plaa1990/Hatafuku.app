@@ -23,3 +23,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## ไลบรารีและฟอนต์ที่โหลดจากภายนอก (ไม่ได้แนบมากับแอป)
+
+ส่วนนี้ถูกโหลดจากเครือข่ายขณะใช้งาน และแคชโดย service worker เมื่อโหลดสำเร็จ ผู้ใช้ควรตรวจสัญญาอนุญาตฉบับเต็มจากต้นทาง:
+
+- **SheetJS (xlsx) 0.18.5** — Apache License 2.0 — ใช้อ่านไฟล์ Excel/ODS ตอนนำเข้า (โหลดจาก cdnjs)
+- **qrcode-generator 1.4.4** — MIT License, Copyright (c) Kazuhiko Arase — ใช้สร้าง QR ในเครื่องมือสติกเกอร์ (โหลดจาก cdnjs)
+- **ฟอนต์จาก Google Fonts** (DM Sans, IBM Plex Mono, Manrope, Noto Sans Thai, Noto Sans JP และฟอนต์ลายมือในเครื่องมือคัดลายมือ) — ส่วนใหญ่ใช้สัญญา SIL Open Font License 1.1 ตามที่ระบุในหน้าของแต่ละฟอนต์
+

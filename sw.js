@@ -1,8 +1,11 @@
-const CACHE_NAME = 'polyglot-v19';
+const CACHE_NAME = 'polyglot-v31';
 const APP_FILES = [
   './',
   './index.html',
   './study-features.js',
+  './vocab-tools.js',
+  './study-extras.js',
+  './worksheet-extras.js',
   './polyglot-vocab.js',
   './html2canvas.min.js',
   './manifest.webmanifest',

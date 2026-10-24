@@ -32,13 +32,28 @@
   if (!S.studyLog || typeof S.studyLog !== 'object') S.studyLog = {};
   save();
 
-  const dueWords = () => S.words.filter(word => !word.dueAt || word.dueAt <= localDay())
-    .sort((a, b) => String(a.dueAt || '').localeCompare(String(b.dueAt || '')));
+  // Cards that were never studied are "new". Only a limited number of them enter the queue each day,
+  // so a fresh 5,000-word library does not show up as 5,000 overdue reviews.
+  const NEW_LIMITS = [5, 10, 20, 30, 50, 100, 9999];
+  const newLimit = () => { const n = Number(S.newPerDay); return Number.isFinite(n) && n >= 0 ? n : 20; };
+  const isNewWord = word => !word.introducedAt && !(Number(word.repetitions) > 0) && !word.last
+    && !(Array.isArray(word.reviewHistory) && word.reviewHistory.length) && !(Number(word.lapses) > 0);
+  const introducedToday = () => S.words.filter(word => word.introducedAt === localDay()).length;
+  const dueWords = () => {
+    const day = localDay();
+    const learned = S.words.filter(word => !isNewWord(word) && (!word.dueAt || word.dueAt <= day))
+      .sort((a, b) => String(a.dueAt || '').localeCompare(String(b.dueAt || '')));
+    const room = Math.max(0, newLimit() - introducedToday());
+    const fresh = room ? S.words.filter(isNewWord).sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0)).slice(0, room) : [];
+    return [...learned, ...fresh];
+  };
+  window.pgDueWords = dueWords;
   const markStudy = (word, quality, source = 'review') => {
     const day = localDay();
     word.reviewHistory ||= [];
+    if (!word.introducedAt) word.introducedAt = day;
     word.reviewHistory.push({ date: day, quality, source });
-    if (word.reviewHistory.length > 300) word.reviewHistory = word.reviewHistory.slice(-300);
+    if (word.reviewHistory.length > 30) word.reviewHistory = word.reviewHistory.slice(-30);
     S.studyLog[day] = (Number(S.studyLog[day]) || 0) + 1;
   };
   const scheduleSM2 = (word, quality) => {
@@ -95,6 +110,9 @@
     .dict-head{font-size:22px;font-weight:700}
     .dict-reading{color:hsl(var(--muted-foreground));margin-left:8px}
     .dict-meaning{font-size:13px;line-height:1.55;margin-top:4px}
+    .study-key{display:inline-block;min-width:1.5em;padding:0 5px;border:1px solid hsl(var(--border));border-bottom-width:2px;border-radius:5px;background:hsl(var(--card));font:500 11px/1.6 var(--app-font-mono);text-align:center;color:inherit;opacity:.85}
+    .study-keyhint{display:none}
+    @media(hover:hover) and (pointer:fine){.study-keyhint{display:block}}
     .study-notice{padding:10px 12px;border-radius:10px;background:#eef5f0;color:#355a49;font-size:12px;line-height:1.5}
     @media(max-width:650px){.study-rating{grid-template-columns:repeat(2,minmax(0,1fr))}.jp-extra-grid{grid-template-columns:1fr}.quiz-grid{grid-template-columns:1fr}}
   `;
@@ -192,18 +210,20 @@
     if (!reviewOrder.length) reviewOrder = due.map(word => word.id);
     const current = reviewOrder.map(id => S.words.find(word => word.id === id)).find(word =>
       word && !reviewedThisSession.has(word.id) && (!word.dueAt || word.dueAt <= localDay()));
-    const dueCount = dueWords().length;
+    const dueList = dueWords(), dueCount = dueList.length, dueNew = dueList.filter(isNewWord).length;
     const select = (id, value) => `<select class="select" id="${id}">${LANGS.map(lang => `<option value="${lang[0]}" ${lang[0] === value ? 'selected' : ''}>${lang[1]}</option>`).join('')}</select>`;
     view.innerHTML = pageHead('ทบทวนวันนี้', 'ให้คะแนนว่าจำแต่ละคำได้แค่ไหน ระบบ SM-2 จะกำหนดวันทบทวนครั้งถัดไปให้อัตโนมัติ') +
       `<section class="panel panel-pad study-panel"><div class="quiz-grid">${select('review-source', reviewSource)}${select('review-target', reviewTarget)}</div>
-       <p class="study-meta" style="margin-top:10px">ต้องทบทวนวันนี้ ${dueCount} คำ · ทบทวนในรอบนี้แล้ว ${reviewedThisSession.size} คำ</p>
+       <p class="study-meta" style="margin-top:10px">ต้องทบทวนวันนี้ ${dueCount} คำ (คำใหม่ ${dueNew}) · ทบทวนในรอบนี้แล้ว ${reviewedThisSession.size} คำ · คำใหม่ต่อวัน <select class="select" id="review-new-limit" style="width:auto;display:inline-block;min-height:36px;padding:2px 8px">${NEW_LIMITS.map(n => `<option value="${n}" ${n === newLimit() ? 'selected' : ''}>${n === 9999 ? 'ไม่จำกัด' : n}</option>`).join('')}</select></p>
        ${current ? `<div class="panel study-card"><div class="eyebrow">โจทย์</div><div class="study-front">${escHtml(wordText(current, reviewSource))}</div>
        ${showReviewAnswer ? `<div class="study-back">${escHtml(wordText(current, reviewTarget) || 'ยังไม่มีคำแปลที่บันทึกไว้')}${current.jpFurigana ? `<div class="study-meta">ふりがな: ${escHtml(current.jpFurigana)}</div>` : ''}</div>` : '<div class="study-meta">ลองนึกความหมายก่อนกดดูเฉลย</div>'}
        <div class="study-actions" style="justify-content:center"><button class="button button-outline" id="review-reveal">${showReviewAnswer ? 'ซ่อนเฉลย' : 'ดูเฉลย'}</button></div>
-       ${showReviewAnswer ? `<div class="study-rating"><button class="button button-outline" data-quality="0">จำไม่ได้</button><button class="button button-outline" data-quality="3">ยาก</button><button class="button button-primary" data-quality="4">จำได้</button><button class="button button-soft" data-quality="5">ง่ายมาก</button></div>` : ''}
-       <div class="study-meta">ระบบจะคำนวณวันทบทวนถัดไปจากคะแนนที่คุณให้</div></div>` :
+       ${showReviewAnswer ? `<div class="study-rating"><button class="button button-outline" data-quality="0">จำไม่ได้ <kbd class="study-key">1</kbd></button><button class="button button-outline" data-quality="3">ยาก <kbd class="study-key">2</kbd></button><button class="button button-primary" data-quality="4">จำได้ <kbd class="study-key">3</kbd></button><button class="button button-soft" data-quality="5">ง่ายมาก <kbd class="study-key">4</kbd></button></div>` : ''}
+       <div class="study-meta">ระบบจะคำนวณวันทบทวนถัดไปจากคะแนนที่คุณให้</div>
+       <div class="study-meta study-keyhint">คีย์ลัด: <kbd class="study-key">Space</kbd> พลิกการ์ด · <kbd class="study-key">1</kbd>–<kbd class="study-key">4</kbd> ให้คะแนน · <kbd class="study-key">S</kbd> ฟังคำถาม · <kbd class="study-key">D</kbd> ฟังคำตอบ</div></div>` :
        `<div class="empty-state"><h3>${dueCount ? 'ทบทวนครบรอบนี้แล้ว 🎉' : 'ตอนนี้ไม่มีคำที่ต้องทบทวน 🎉'}</h3><p>${dueCount ? `ยังเหลืออีก ${dueCount} คำ จะเริ่มรอบใหม่หรือพักก่อนก็ได้` : 'คำที่ถึงกำหนดทบทวนจะมาแสดงที่นี่'}</p><div class="study-actions" style="justify-content:center"><button class="button button-outline" id="review-restart">เริ่มรอบใหม่</button><a class="button button-primary" href="#vocab">เปิดคลังคำศัพท์</a></div></div>`}
        </section>`;
+    document.querySelector('#review-new-limit').onchange = event => { S.newPerDay = Number(event.target.value); save(); reviewOrder = []; reviewView(); };
     document.querySelector('#review-source').onchange = event => { reviewSource = event.target.value; reviewView(); };
     document.querySelector('#review-target').onchange = event => { reviewTarget = event.target.value; reviewView(); };
     const reveal = document.querySelector('#review-reveal');
@@ -219,6 +239,31 @@
     const restart = document.querySelector('#review-restart');
     if (restart) restart.onclick = () => { reviewedThisSession = new Set(); reviewOrder = dueWords().map(word => word.id); showReviewAnswer = false; reviewView(); };
   }
+
+  // Keyboard shortcuts on the review page: Space flips the card, 1–4 rate it, S / D read the front / back aloud.
+  document.addEventListener('keydown', event => {
+    if (route() !== 'review' || event.ctrlKey || event.metaKey || event.altKey || event.isComposing) return;
+    const target = event.target;
+    if (target && target !== document.body && target !== document.documentElement) {
+      // Never steal keys from form fields, buttons, links or an open dialog.
+      if (target.matches?.('input, textarea, select, button, a, [contenteditable="true"]')) return;
+    }
+    if (document.querySelector('.modal-backdrop')) return;
+    const key = event.key;
+    if (key === ' ' || key === 'Spacebar') {
+      const reveal = document.querySelector('#review-reveal');
+      if (reveal) { event.preventDefault(); reveal.click(); }
+      return;
+    }
+    if (/^[1-4]$/.test(key)) {
+      const quality = ['0', '3', '4', '5'][Number(key) - 1];
+      const button = document.querySelector(`[data-quality="${quality}"]`);
+      if (button) { event.preventDefault(); button.click(); }
+      return;
+    }
+    const speak = key === 's' || key === 'S' ? '#pg-say-front' : key === 'd' || key === 'D' ? '#pg-say-back' : '';
+    if (speak) { const button = document.querySelector(speak); if (button) { event.preventDefault(); button.click(); } }
+  });
 
   // Practice quiz: spelling, four choices, or matching pairs; no network required.
   let quizState = null;
@@ -366,6 +411,10 @@
   }
 
   // Simple in-app bar history and frequent-forgetting report.
+  // localStorage holds roughly 5 million characters per origin; show how much of it is used.
+  function storageUsagePercent() {
+    try { return Math.min(100, Math.round(((localStorage.getItem('pg:v1') || '').length / 5000000) * 100)); } catch (e) { return 0; }
+  }
   function statsView() {
     const days = Array.from({ length: 14 }, (_, i) => {
       const date = new Date(); date.setDate(date.getDate() - (13 - i));
@@ -389,10 +438,10 @@
       `<div class="stat-grid"><div class="panel stat-card"><div class="stat-top">เรียนติดต่อกัน</div><div class="stat-value">${streak} วัน</div><div class="stat-foot">นับจากการทบทวนและแบบทดสอบที่บันทึกไว้</div></div>
       <div class="panel stat-card"><div class="stat-top">จำนวนครั้งที่ฝึกทั้งหมด</div><div class="stat-value">${totalReviews}</div><div class="stat-foot">การทบทวนและข้อสอบที่ตอบถูก</div></div>
       <div class="panel stat-card"><div class="stat-top">ถึงกำหนดทบทวน</div><div class="stat-value">${dueWords().length}</div><div class="stat-foot">กำหนดโดย SM-2</div></div>
-      <div class="panel stat-card"><div class="stat-top">จำนวนคำศัพท์</div><div class="stat-value">${S.words.length}</div><div class="stat-foot">คำที่เก็บไว้ในเครื่องนี้</div></div></div>
+      <div class="panel stat-card"><div class="stat-top">จำนวนคำศัพท์</div><div class="stat-value">${S.words.length}</div><div class="stat-foot">คำที่เก็บไว้ในเครื่องนี้ · พื้นที่เก็บข้อมูลใช้ไป ${storageUsagePercent()}%</div></div></div>
       <section class="panel panel-pad"><div class="section-title"><h2>คำที่ฝึก · 14 วันที่ผ่านมา</h2><a class="button button-soft" href="#review">เริ่มทบทวน</a></div>
       <div class="study-bars" role="img" aria-label="จำนวนการทบทวนรายวัน 14 วันล่าสุด">${days.map(day => `<div class="study-bar-col" title="${day.key}: ${day.count}"><span class="study-bar-count">${day.count || ''}</span><div class="study-bar" style="height:${Math.max(2, day.count / max * 90)}%"></div><span class="study-bar-label">${day.key.slice(5)}</span></div>`).join('')}</div></section>
-      <section class="panel panel-pad" style="margin-top:15px"><div class="section-title"><h2>คำที่มักตอบผิด</h2><span class="tag">${weak.length} คำ</span></div>
+      <section class="panel panel-pad" style="margin-top:15px"><div class="section-title"><h2>คำที่มักตอบผิด</h2><span style="display:flex;gap:8px;align-items:center"><span class="tag">${weak.length} คำ</span><a class="button button-soft" href="#leeches">ดูคำที่ลืมบ่อยทั้งหมด</a></span></div>
       ${weak.length ? `<div class="review-list">${weak.map(item => `<div class="review-row"><div><div class="word-main">${escHtml(item.word.jp || item.word.th || item.word.en)}</div><div class="word-meta">${escHtml(item.word.en || item.word.th || '')}</div></div><span class="tag">ผิด ${item.count} ครั้ง</span></div>`).join('')}</div>` : '<p class="subtitle">ยังไม่มีคำที่ตอบผิด ผลจากแบบทดสอบและการทบทวนจะมาสร้างรายการนี้</p>'}</section>`;
   }
 
@@ -472,6 +521,14 @@
       };
       const headword = firstText(kanji, ['text','keb','expression']) || firstText(readings, ['text','reb']) || String(entry.word || '');
       const reading = firstText(readings, ['text','reb','kana']);
+      // Keep every written form and reading so the reading-suggestion tool can match alternates too.
+      const allTexts = (items, keys) => (Array.isArray(items) ? items : (items ? [items] : [])).map(item => {
+        if (typeof item === 'string') return item;
+        for (const key of keys) if (item && item[key]) return String(item[key]);
+        return '';
+      }).filter(Boolean).slice(0, 8);
+      const forms = allTexts(kanji, ['text','keb','expression']);
+      const allReadings = allTexts(readings, ['text','reb','kana']);
       const senses = entry.sense || entry.senses || [];
       const meanings = [];
       (Array.isArray(senses) ? senses : [senses]).forEach(sense => {
@@ -481,7 +538,7 @@
           if (text && !meanings.includes(String(text))) meanings.push(String(text));
         });
       });
-      return { id: `jmdict-${entry.id || index}-${headword}`, headword, reading, meanings: meanings.slice(0, 8), source: 'JMdict' };
+      return { id: `jmdict-${entry.id || index}-${headword}`, headword, reading, forms, readings: allReadings, meanings: meanings.slice(0, 8), source: 'JMdict' };
     }).filter(entry => entry.headword && entry.meanings.length);
   }
   function dictionaryView() {
@@ -539,6 +596,97 @@
     ['stats', 'แผนการเรียนและสถิติ'], ['packs', 'ชุดคำศัพท์']
   ];
   EXTRA_ROUTES.forEach(([id, label]) => { if (!VIEWS.some(item => item[0] === id)) VIEWS.push([id, label]); });
+  // ---- Daily goal, badges and spoken words (ported from the React build) ----
+  S.settings = Object.assign({ dailyGoal: 10, speech: true, speechRate: 1 }, S.settings || {});
+  if (!Array.isArray(S.badges)) S.badges = [];
+  const BADGES = [
+    ['first', 'ก้าวแรก', 'ทบทวนครบ 1 ครั้ง', m => m.total >= 1],
+    ['ten', 'สิบคำแรก', 'จำได้แล้ว 10 คำ', m => m.learned >= 10],
+    ['hundred', 'คลังกำลังโต', 'จำได้แล้ว 100 คำ', m => m.learned >= 100],
+    ['master', 'นักเก็บคำศัพท์', 'จำได้แล้ว 1,000 คำ', m => m.learned >= 1000],
+    ['streak7', 'ติดต่อกัน 7 วัน', 'เรียนต่อเนื่อง 7 วัน', m => m.streak >= 7],
+    ['streak30', 'ติดต่อกัน 30 วัน', 'เรียนต่อเนื่อง 30 วัน', m => m.streak >= 30]
+  ];
+  const SPEECH_LOCALE = { th: 'th-TH', en: 'en-US', cn: 'zh-CN', jp: 'ja-JP', kr: 'ko-KR' };
+  const studyMetrics = () => {
+    let streak = 0;
+    for (let i = 0; ; i++) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      if (S.studyLog[localDay(d)]) streak++; else if (i > 0) break;
+    }
+    return {
+      streak,
+      total: Object.values(S.studyLog).reduce((a, b) => a + (Number(b) || 0), 0),
+      learned: S.words.filter(w => (Number(w.repetitions) || 0) >= 1).length,
+      today: Number(S.studyLog[localDay()]) || 0
+    };
+  };
+  const checkBadges = () => {
+    const m = studyMetrics();
+    const fresh = BADGES.filter(b => b[3](m) && !S.badges.includes(b[0]));
+    if (!fresh.length) return;
+    S.badges.push(...fresh.map(b => b[0])); save();
+    if (typeof toast === 'function') toast('🏅 ได้รับเหรียญ: ' + fresh.map(b => b[1]).join(', '));
+  };
+  const speakText = (text, lang) => {
+    if (!S.settings.speech || !('speechSynthesis' in window)) {
+      if (typeof toast === 'function') toast('เบราว์เซอร์นี้ไม่รองรับเสียงอ่าน หรือปิดไว้ในหน้าสถิติ');
+      return;
+    }
+    const u = new SpeechSynthesisUtterance(String(text || ''));
+    u.lang = SPEECH_LOCALE[lang] || 'en-US';
+    u.rate = Number(S.settings.speechRate) || 1;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  };
+  const goalBar = () => {
+    const m = studyMetrics(), goal = Math.max(1, Number(S.settings.dailyGoal) || 10);
+    const pct = Math.min(100, Math.round(m.today / goal * 100));
+    return `<div id="pg-goal" class="panel panel-pad" style="margin-bottom:15px"><div class="section-title"><h2>เป้าหมายวันนี้</h2><span class="tag">${m.today} / ${goal} ครั้ง${m.today >= goal ? ' ✓' : ''}</span></div>
+      <div style="height:10px;border-radius:99px;background:hsl(var(--muted));overflow:hidden"><div style="width:${pct}%;height:100%;background:hsl(var(--primary));transition:width .3s"></div></div></div>`;
+  };
+  function enhanceReview() {
+    checkBadges();
+    const panel = view.querySelector('.study-panel');
+    if (!panel) return;
+    view.querySelector('#pg-goal')?.remove();
+    panel.insertAdjacentHTML('beforebegin', goalBar());
+    const front = panel.querySelector('.study-front'), back = panel.querySelector('.study-back');
+    const add = (el, lang, id) => {
+      if (!el || !el.textContent.trim()) return;
+      const b = document.createElement('button');
+      b.className = 'button button-soft'; b.id = id; b.type = 'button';
+      b.textContent = '🔊'; b.title = 'ฟังเสียงอ่าน'; b.setAttribute('aria-label', 'ฟังเสียงอ่าน');
+      b.style.marginLeft = '10px';
+      b.onclick = () => speakText(el.firstChild ? el.firstChild.textContent : el.textContent, lang);
+      el.appendChild(b);
+    };
+    add(front, view.querySelector('#review-source')?.value, 'pg-say-front');
+    if (back && !back.textContent.includes('ยังไม่มีคำแปล')) add(back, view.querySelector('#review-target')?.value, 'pg-say-back');
+  }
+  function enhanceStats() {
+    checkBadges();
+    const m = studyMetrics();
+    const goals = [5, 10, 20, 30, 50, 100];
+    if (!goals.includes(S.settings.dailyGoal)) goals.push(S.settings.dailyGoal);
+    view.querySelector('#pg-extra')?.remove();
+    const html = `<div id="pg-extra">${goalBar()}
+      <section class="panel panel-pad" style="margin-bottom:15px"><div class="section-title"><h2>เหรียญรางวัล</h2><span class="tag">${S.badges.length} / ${BADGES.length}</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">${BADGES.map(b => { const on = S.badges.includes(b[0]); return `<div class="panel" style="padding:12px;text-align:center;opacity:${on ? 1 : .45}"><div style="font-size:26px">${on ? '🏅' : '🔒'}</div><strong>${b[1]}</strong><div class="study-meta">${b[2]}</div></div>`; }).join('')}</div></section>
+      <section class="panel panel-pad" style="margin-bottom:15px"><div class="section-title"><h2>ตั้งค่าการเรียน</h2></div>
+      <div class="quiz-grid"><label>เป้าหมายต่อวัน<select class="select" id="pg-goal-select">${goals.sort((a, b) => a - b).map(g => `<option value="${g}" ${g === S.settings.dailyGoal ? 'selected' : ''}>${g} ครั้ง</option>`).join('')}</select></label>
+      <label>เสียงอ่านออกเสียง<select class="select" id="pg-speech-on"><option value="1" ${S.settings.speech ? 'selected' : ''}>เปิด</option><option value="0" ${S.settings.speech ? '' : 'selected'}>ปิด</option></select></label>
+      <label>ความเร็วเสียง<select class="select" id="pg-speech-rate">${[.6, .8, 1, 1.2].map(r => `<option value="${r}" ${Number(S.settings.speechRate) === r ? 'selected' : ''}>${r}x</option>`).join('')}</select></label></div></section></div>`;
+    const head = view.querySelector('.stat-grid');
+    if (!head) return;
+    head.insertAdjacentHTML('beforebegin', html);
+    view.querySelector('#pg-goal-select').onchange = e => { S.settings.dailyGoal = Number(e.target.value); save(); statsView(); };
+    view.querySelector('#pg-speech-on').onchange = e => { S.settings.speech = e.target.value === '1'; save(); };
+    view.querySelector('#pg-speech-rate').onchange = e => { S.settings.speechRate = Number(e.target.value); save(); };
+  }
+  const baseReviewView = reviewView, baseStatsView = statsView;
+  reviewView = function () { baseReviewView.apply(this, arguments); enhanceReview(); };
+  statsView = function () { baseStatsView.apply(this, arguments); enhanceStats(); };
+
   const previousRender = render;
   render = function () {
     const current = route();
@@ -552,11 +700,11 @@
 
   // Add font, script-display, and ready-made background controls to the existing studios.
   if (typeof TOOLS !== 'undefined') {
-    TOOLS.handwriting = TOOLS.handwriting.replace(
+    TOOLS.handwriting=patchTool(TOOLS.handwriting,
       '<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>',
-      '<script src="html2canvas.min.js"></script>'
+      '<script src="html2canvas.min.js" onerror="var s=document.createElement(\'script\');s.src=\'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js\';document.head.appendChild(s)"></script>'
     );
-    TOOLS.handwriting = TOOLS.handwriting.replace(
+    TOOLS.handwriting=patchTool(TOOLS.handwriting,
       '</head>',
       '<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet"></head>'
     );
@@ -602,7 +750,7 @@
   const originalMessage=window.onmessage;
   render();
 })();`;
-    const injectFrame = (html, code) => html.replace('</body>', '<script>' + code + '</' + 'script></body>');
+    const injectFrame = (html, code) => patchTool(html, '</body>', '<script>' + code + '</' + 'script></body>');
     TOOLS.handwriting = injectFrame(TOOLS.handwriting, japaneseControls);
     const handwritingLayoutControls = `
 (function(){
@@ -799,7 +947,7 @@
 })();`;
     TOOLS.handwriting = injectFrame(TOOLS.handwriting, handwritingLayoutControls);
 
-    TOOLS.balloons = TOOLS.balloons.replace(
+    TOOLS.balloons=patchTool(TOOLS.balloons,
       '<h2>🖼️ ขอบสติกเกอร์ & พื้นหลัง</h2>',
       '<label>🎨 พื้นหลังด่วน</label><select id="pgBgPreset"><option value="transparent">โปร่งใส</option><option value="pink">ชมพูพาสเทล</option><option value="blue-dots">ฟ้าลายจุด</option><option value="night-stars">กรมท่าลายดาว</option><option value="yellow-grid">เหลืองลายตาราง</option></select><h2>🖼️ ขอบสติกเกอร์ & พื้นหลัง</h2>'
     );
@@ -814,6 +962,9 @@
 })();`;
     TOOLS.balloons = injectFrame(TOOLS.balloons, stickerBackgrounds);
   }
+
+  // Shared helpers for the extra modules (vocab-tools.js, study-extras.js).
+  window.PG = { localDay, markStudy, scheduleSM2, isNewWord, dueWords, speakText, studyMetrics, wordText, cleanTags, shuffle, escHtml, loadDictionary: async () => { await loadDictionary(); return dictionaryEntries; }, DICT_STARTER };
 
   render();
 })();
