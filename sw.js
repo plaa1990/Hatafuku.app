@@ -1,16 +1,29 @@
-const CACHE_NAME = 'polyglot-v31';
+const CACHE_NAME = 'hatafuku-v57';
 const APP_FILES = [
   './',
   './index.html',
-  './study-features.js',
-  './vocab-tools.js',
-  './study-extras.js',
+  './hatafuku-theme.css',
   './worksheet-extras.js',
-  './polyglot-vocab.js',
+  './pg-color-fields.js',
+  './worksheet-free.js',
+  './balloon-plus.js',
   './html2canvas.min.js',
+  './draw.html',
+  './draw-studio.html',
+  './extras.html',
+  './typing.html',
+  './line-theme.html',
+  './qrcode.min.js',
+  './jszip.min.js',
+  './cozy-theme.css',
+  './studio-plus.js',
   './manifest.webmanifest',
+  './manifest.json',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './icon-maskable-512.png',
+  './screenshot-mobile.png',
+  './screenshot-desktop.png'
 ];
 // ไลบรารี/ฟอนต์จากภายนอก: พยายามแคชตอนติดตั้ง ถ้าโหลดไม่ได้ก็ข้ามได้ (ไม่ทำให้การติดตั้งล้ม)
 const EXTERNAL_FILES = [
