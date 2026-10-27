@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hatafuku-v57';
+const CACHE_NAME = 'hatafuku-v58';
 const APP_FILES = [
   './',
   './index.html',

@@ -1035,7 +1035,7 @@ html, body {
     <div class="brand-area">
       <div class="brand-icon">🎨</div>
       <div>
-        <div class="brand-title">สตูดิโอธีม LINE Pro <span class="brand-badge">Hatafuku v2.4</span></div>
+        <div class="brand-title">สตูดิโอธีม LINE Pro <span class="brand-badge">Hatafuku v2.5</span></div>
         <div class="brand-subtitle">ออกแบบธีม LINE • เยลลี่ 3D • รหัสผ่าน • ดึงคำจากตัวอักษรลูกโป่ง</div>
       </div>
     </div>
@@ -1211,85 +1211,6 @@ html, body {
           <div class="form-group">
             <label class="form-label">ฟิล์มขาวทับรูป (ช่วยให้อ่านแชทชัดขึ้น) <span id="bgDimVal" class="val">0%</span></label>
             <input type="range" id="bgDim" min="0" max="70" class="range">
-          </div>
-        </div>
-
-        <!-- Friends / Profile View -->
-        <div id="friendsView" class="phone-screen" style="display:none;background:#ffffff;">
-          <div id="friendsHeader" style="padding:24px 14px 10px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.06);flex:none;">
-            <span style="font-size:15px;font-weight:800;">Friends</span>
-            <div style="display:flex;gap:10px;font-size:13px;">
-              <span>🔍</span><span>👤+</span><span>⚙️</span>
-            </div>
-          </div>
-          <!-- Profile Card -->
-          <div style="padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #f0efe8;background:rgba(255,255,255,0.85);flex:none;">
-            <div style="width:44px;height:44px;border-radius:50%;background:#d5876a;color:#fff;display:grid;place-items:center;font-size:16px;font-weight:700;flex:none;box-shadow:0 2px 6px rgba(0,0,0,0.12);">🎨</div>
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:700;color:#26483e;">คุณครีเอเตอร์ 🌟</div>
-              <div style="font-size:10.5px;color:#6b8279;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">ออกแบบธีม LINE น่ารักๆ 💕</div>
-            </div>
-          </div>
-          <!-- Favorites -->
-          <div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:#859990;text-transform:uppercase;">Favorites</div>
-          <div style="display:flex;gap:12px;padding:4px 14px 10px;overflow-x:auto;">
-            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;"><div class="friend-avatar" style="background:#fce7f3;color:#be185d;">🎀</div><span style="font-size:9.5px;font-weight:600;">แพรว</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;"><div class="friend-avatar" style="background:#e0f2fe;color:#0369a1;">💼</div><span style="font-size:9.5px;font-weight:600;">พี่บอส</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;"><div class="friend-avatar" style="background:#fef3c7;color:#b45309;">🌸</div><span style="font-size:9.5px;font-weight:600;">มินนี่</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;"><div class="friend-avatar" style="background:#dcfce7;color:#15803d;">✨</div><span style="font-size:9.5px;font-weight:600;">กัปตัน</span></div>
-          </div>
-          <!-- Friends List -->
-          <div style="flex:1;overflow-y:auto;padding-bottom:10px;">
-            <div style="padding:4px 14px;font-size:10px;font-weight:700;color:#859990;text-transform:uppercase;">Friends (128)</div>
-            <div class="friend-row"><div class="friend-avatar">🎀</div><div><div class="friend-name">น้องแพรว</div><div class="friend-status">นอนหลับฝันดี 🌙</div></div></div>
-            <div class="friend-row"><div class="friend-avatar">💼</div><div><div class="friend-name">พี่บอส</div><div class="friend-status">ทำงานสู้งาน 💻</div></div></div>
-            <div class="friend-row"><div class="friend-avatar">🌸</div><div><div class="friend-name">มินนี่</div><div class="friend-status">กินชาบูกันไหม 🍲</div></div></div>
-            <div class="friend-row"><div class="friend-avatar">✨</div><div><div class="friend-name">กัปตัน</div><div class="friend-status">สู้ๆ นะทุกคน ✌️</div></div></div>
-          </div>
-          <!-- Bottom Tab Bar -->
-          <div id="friendsTabBar" style="height:46px;background:#ffffff;border-top:1px solid #eee;display:flex;justify-content:space-around;align-items:center;color:#667a72;font-size:10px;flex:none;">
-            <div style="display:flex;flex-direction:column;align-items:center;color:var(--primary);font-weight:700;"><span style="font-size:14px;">🏠</span><span>Home</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">💬</span><span>Chat</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">✨</span><span>VOOM</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">⚙️</span><span>Setting</span></div>
-          </div>
-        </div>
-
-        <!-- Timeline / Voom View -->
-        <div id="timelineView" class="phone-screen" style="display:none;background:#f5f4ed;">
-          <div id="timelineHeader" style="padding:24px 14px 10px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.06);flex:none;">
-            <span style="font-size:15px;font-weight:800;">LINE VOOM</span>
-            <div style="display:flex;gap:10px;font-size:13px;">
-              <span>🔔</span><span>🔍</span>
-            </div>
-          </div>
-          <div style="flex:1;overflow-y:auto;padding:10px;">
-            <div class="voom-card">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <div style="width:32px;height:32px;border-radius:50%;background:#d5876a;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;">🎨</div>
-                <div>
-                  <div style="font-size:12px;font-weight:700;">คุณครีเอเตอร์ 🌟</div>
-                  <div style="font-size:9.5px;color:#859990;">15 นาทีที่แล้ว · สาธารณะ</div>
-                </div>
-              </div>
-              <div style="font-size:12px;color:#26483e;margin-bottom:8px;line-height:1.4;" id="voomPostText">
-                เปิดตัวธีม LINE สไตล์เยลลี่ 3D ใหม่แล้วค่า สีพาสเทลละมุนตามาก 💕
-              </div>
-              <div style="background:#fef3ed;border:1px solid #fbd9cc;border-radius:12px;padding:12px;display:flex;align-items:center;justify-content:center;">
-                <img id="voomPostImg" alt="" style="max-height:80px;object-fit:contain;">
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:6px;border-top:1px solid #f0efe8;font-size:11px;color:#6b8279;">
-                <span>❤️ ถูกใจ 256</span>
-                <span>💬 42 ความคิดเห็น</span>
-              </div>
-            </div>
-          </div>
-          <!-- Bottom Tab Bar -->
-          <div id="timelineTabBar" style="height:46px;background:#ffffff;border-top:1px solid #eee;display:flex;justify-content:space-around;align-items:center;color:#667a72;font-size:10px;flex:none;">
-            <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">🏠</span><span>Home</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">💬</span><span>Chat</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;color:var(--primary);font-weight:700;"><span style="font-size:14px;">✨</span><span>VOOM</span></div>
-            <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">⚙️</span><span>Setting</span></div>
           </div>
         </div>
 
@@ -1569,6 +1490,85 @@ html, body {
             <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">🏠</span><span>Home</span></div>
             <div style="display:flex;flex-direction:column;align-items:center;color:var(--primary);font-weight:700;"><span style="font-size:14px;">💬</span><span>Chat</span></div>
             <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">✨</span><span>Timeline</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">⚙️</span><span>Setting</span></div>
+          </div>
+        </div>
+
+        <!-- Friends / Profile View -->
+        <div id="friendsView" class="phone-screen" style="display:none;background:#ffffff;">
+          <div id="friendsHeader" style="padding:24px 14px 10px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.06);flex:none;">
+            <span style="font-size:15px;font-weight:800;">Friends</span>
+            <div style="display:flex;gap:10px;font-size:13px;">
+              <span>🔍</span><span>👤+</span><span>⚙️</span>
+            </div>
+          </div>
+          <!-- Profile Card -->
+          <div style="padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #f0efe8;background:rgba(255,255,255,0.85);flex:none;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#d5876a;color:#fff;display:grid;place-items:center;font-size:16px;font-weight:700;flex:none;box-shadow:0 2px 6px rgba(0,0,0,0.12);">🎨</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:700;color:#26483e;">คุณครีเอเตอร์ 🌟</div>
+              <div style="font-size:10.5px;color:#6b8279;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">ออกแบบธีม LINE น่ารักๆ 💕</div>
+            </div>
+          </div>
+          <!-- Favorites -->
+          <div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:#859990;text-transform:uppercase;">Favorites</div>
+          <div style="display:flex;gap:12px;padding:4px 14px 10px;overflow-x:auto;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;"><div class="friend-avatar" style="background:#fce7f3;color:#be185d;">🎀</div><span style="font-size:9.5px;font-weight:600;">แพรว</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;"><div class="friend-avatar" style="background:#e0f2fe;color:#0369a1;">💼</div><span style="font-size:9.5px;font-weight:600;">พี่บอส</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;"><div class="friend-avatar" style="background:#fef3c7;color:#b45309;">🌸</div><span style="font-size:9.5px;font-weight:600;">มินนี่</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;"><div class="friend-avatar" style="background:#dcfce7;color:#15803d;">✨</div><span style="font-size:9.5px;font-weight:600;">กัปตัน</span></div>
+          </div>
+          <!-- Friends List -->
+          <div style="flex:1;overflow-y:auto;padding-bottom:10px;">
+            <div style="padding:4px 14px;font-size:10px;font-weight:700;color:#859990;text-transform:uppercase;">Friends (128)</div>
+            <div class="friend-row"><div class="friend-avatar">🎀</div><div><div class="friend-name">น้องแพรว</div><div class="friend-status">นอนหลับฝันดี 🌙</div></div></div>
+            <div class="friend-row"><div class="friend-avatar">💼</div><div><div class="friend-name">พี่บอส</div><div class="friend-status">ทำงานสู้งาน 💻</div></div></div>
+            <div class="friend-row"><div class="friend-avatar">🌸</div><div><div class="friend-name">มินนี่</div><div class="friend-status">กินชาบูกันไหม 🍲</div></div></div>
+            <div class="friend-row"><div class="friend-avatar">✨</div><div><div class="friend-name">กัปตัน</div><div class="friend-status">สู้ๆ นะทุกคน ✌️</div></div></div>
+          </div>
+          <!-- Bottom Tab Bar -->
+          <div id="friendsTabBar" style="height:46px;background:#ffffff;border-top:1px solid #eee;display:flex;justify-content:space-around;align-items:center;color:#667a72;font-size:10px;flex:none;">
+            <div style="display:flex;flex-direction:column;align-items:center;color:var(--primary);font-weight:700;"><span style="font-size:14px;">🏠</span><span>Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">💬</span><span>Chat</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">✨</span><span>VOOM</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">⚙️</span><span>Setting</span></div>
+          </div>
+        </div>
+
+        <!-- Timeline / Voom View -->
+        <div id="timelineView" class="phone-screen" style="display:none;background:#f5f4ed;">
+          <div id="timelineHeader" style="padding:24px 14px 10px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.06);flex:none;">
+            <span style="font-size:15px;font-weight:800;">LINE VOOM</span>
+            <div style="display:flex;gap:10px;font-size:13px;">
+              <span>🔔</span><span>🔍</span>
+            </div>
+          </div>
+          <div style="flex:1;overflow-y:auto;padding:10px;">
+            <div class="voom-card">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <div style="width:32px;height:32px;border-radius:50%;background:#d5876a;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;">🎨</div>
+                <div>
+                  <div style="font-size:12px;font-weight:700;">คุณครีเอเตอร์ 🌟</div>
+                  <div style="font-size:9.5px;color:#859990;">15 นาทีที่แล้ว · สาธารณะ</div>
+                </div>
+              </div>
+              <div style="font-size:12px;color:#26483e;margin-bottom:8px;line-height:1.4;" id="voomPostText">
+                เปิดตัวธีม LINE สไตล์เยลลี่ 3D ใหม่แล้วค่า สีพาสเทลละมุนตามาก 💕
+              </div>
+              <div style="background:#fef3ed;border:1px solid #fbd9cc;border-radius:12px;padding:12px;display:flex;align-items:center;justify-content:center;">
+                <img id="voomPostImg" alt="" style="max-height:80px;object-fit:contain;">
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:6px;border-top:1px solid #f0efe8;font-size:11px;color:#6b8279;">
+                <span>❤️ ถูกใจ 256</span>
+                <span>💬 42 ความคิดเห็น</span>
+              </div>
+            </div>
+          </div>
+          <!-- Bottom Tab Bar -->
+          <div id="timelineTabBar" style="height:46px;background:#ffffff;border-top:1px solid #eee;display:flex;justify-content:space-around;align-items:center;color:#667a72;font-size:10px;flex:none;">
+            <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">🏠</span><span>Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">💬</span><span>Chat</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;color:var(--primary);font-weight:700;"><span style="font-size:14px;">✨</span><span>VOOM</span></div>
             <div style="display:flex;flex-direction:column;align-items:center;"><span style="font-size:14px;">⚙️</span><span>Setting</span></div>
           </div>
         </div>
@@ -1854,7 +1854,12 @@ const DEFAULTS = {
   text: 'รับทราบคำสั่ง 💕', pattern: 'none', patternSize: 40, bgDim: 0, bgImage: null,
   jMode: 'text', jShape: 'heart', jText: 'น่ารัก', jColor: '#d5876a', jBorderColor: '#ffffff', jBorder: 14, jGloss: 80,
   jFat: 8, jPuff: 26, jShade: 75, jBounce: 45, jShadowA: 35, jStripe: 0, jStripeW: 14,
-  jMat: 'balloon', jSize: 160, jSpace: 0, jCurve: 0, jJit: 0, jCols: '', jGrad: 0, jHi: 1, jSpark: 0, jDrop: 1, jColor2: '#9e4a30', jColor3: '#fad6cb'
+  jMat: 'balloon', jSize: 160, jSpace: 0, jCurve: 0, jJit: 0, jCols: '', jGrad: 0, jHi: 1, jSpark: 0, jDrop: 1, jColor2: '#9e4a30', jColor3: '#fad6cb',
+  bgMode: 'solid', bgC2: '#ffd9e8', bgAngle: 160, bgZoom: 100, bgX: 50, bgY: 50, bgBlur: 0,
+  patColor: '', patAlpha: 100,
+  hdrTitle: 'คุณครีเอเตอร์ 🌟', friendName: 'ลูกค้าคนโปรด', friendMsg: 'สวัสดีค่า สนใจธีม LINE สไตล์นี้มากเลยค่ะ! 💖', myMsg: 'ยินดีต้อนรับค่า สั่งทำหรือสอบถามได้เลยนะคะ 💕',
+  bnShow: 1, bnScale: 100, bnColor: '', bnBorder: 10, bnBorderColor: '#ffffff',
+  layers: []
 };
 
 const CHECKS = ['jGrad', 'jHi', 'jSpark', 'jDrop'];
@@ -1942,6 +1947,7 @@ function adj(hex) {
 function pal(dark = false) {
   const p = { primary: adj(S.primary), chatBg: adj(S.chatBg), my: adj(S.my), friend: adj(S.friend), passBg: adj(S.passBg), numpad: adj(S.numpad) };
   if (dark) { p.primary = mix(p.primary, '#1a2924', .7); p.chatBg = mix(p.chatBg, '#141e1b', .88); p.friend = '#2a3b34'; }
+  p.bg2 = adj(S.bgC2 || '#ffd9e8'); if (dark) p.bg2 = mix(p.bg2, '#141e1b', .88);
   p.myText = readableOn(p.my); p.friendText = readableOn(p.friend); p.headText = readableOn(p.primary);
   p.passText = readableOn(p.passBg); p.numText = readableOn(p.numpad);
   return p;
@@ -1979,7 +1985,7 @@ function showModal(title, desc, icon = '🎉') {
 let bgImgEl = null;
 function loadBgImage(dataUrl, cb) {
   if (!dataUrl) { bgImgEl = null; cb && cb(); return; }
-  const im = new Image(); im.onload = () => { bgImgEl = im; cb && cb(); }; im.src = dataUrl;
+  const im = new Image(); im.onload = () => { bgImgEl = im; cb && cb(); }; im.onerror = () => { bgImgEl = null; toast('เปิดรูปพื้นหลังไม่ได้ ลองไฟล์อื่น'); cb && cb(); }; im.src = dataUrl;
 }
 function heartPath(ctx, x, y, s) {
   ctx.beginPath(); ctx.moveTo(x, y + s * .9);
@@ -1993,22 +1999,34 @@ function sparklePath(ctx, x, y, s) {
 }
 function drawPatternBg(ctx, w, h, p) {
   ctx.save();
-  ctx.fillStyle = p.chatBg; ctx.fillRect(0, 0, w, h);
+  if (S.bgMode === 'gradient') {
+    const ang = ((S.bgAngle ?? 160) - 90) * Math.PI / 180, cx0 = w / 2, cy0 = h / 2, Ln = Math.abs(w * Math.cos(ang)) / 2 + Math.abs(h * Math.sin(ang)) / 2;
+    const gr = ctx.createLinearGradient(cx0 - Math.cos(ang) * Ln, cy0 - Math.sin(ang) * Ln, cx0 + Math.cos(ang) * Ln, cy0 + Math.sin(ang) * Ln);
+    gr.addColorStop(0, p.chatBg); gr.addColorStop(1, p.bg2 || p.chatBg); ctx.fillStyle = gr;
+  } else ctx.fillStyle = p.chatBg;
+  ctx.fillRect(0, 0, w, h);
   if (bgImgEl) {
-    const iw = bgImgEl.naturalWidth, ih = bgImgEl.naturalHeight, s = Math.max(w / iw, h / ih), dw = iw * s, dh = ih * s;
-    ctx.drawImage(bgImgEl, (w - dw) / 2, (h - dh) / 2, dw, dh);
+    const iw = bgImgEl.naturalWidth, ih = bgImgEl.naturalHeight, s = Math.max(w / iw, h / ih) * ((S.bgZoom || 100) / 100), dw = iw * s, dh = ih * s;
+    if (S.bgBlur > 0) ctx.filter = `blur(${S.bgBlur * w / 300}px)`;
+    ctx.drawImage(bgImgEl, (w - dw) * ((S.bgX ?? 50) / 100), (h - dh) * ((S.bgY ?? 50) / 100), dw, dh);
+    ctx.filter = 'none';
     if (S.bgDim > 0) { ctx.fillStyle = `rgba(255,255,255,${S.bgDim / 100})`; ctx.fillRect(0, 0, w, h); }
     ctx.restore(); return;
   }
-  const k = w / 300, step = S.patternSize * k;
-  ctx.fillStyle = p.my; ctx.strokeStyle = p.my;
-  const stagger = (alpha, fn) => { ctx.globalAlpha = alpha; let row = 0; for (let y = step / 2; y < h + step; y += step, row++) for (let x = row % 2 ? 0 : step / 2; x < w + step; x += step) fn(x, y); };
+  const k = w / 300, step = S.patternSize * k, aK = a => Math.min(1, a * ((S.patAlpha ?? 100) / 100));
+  ctx.fillStyle = S.patColor || p.my; ctx.strokeStyle = S.patColor || p.my;
+  const stagger = (alpha, fn) => { ctx.globalAlpha = aK(alpha); let row = 0; for (let y = step / 2; y < h + step; y += step, row++) for (let x = row % 2 ? 0 : step / 2; x < w + step; x += step) fn(x, y); };
   switch (S.pattern) {
     case 'dots': stagger(.28, (x, y) => { ctx.beginPath(); ctx.arc(x, y, step * .14, 0, Math.PI * 2); ctx.fill(); }); break;
     case 'hearts': stagger(.3, (x, y) => heartPath(ctx, x, y, step * .2)); break;
     case 'stars': stagger(.32, (x, y) => sparklePath(ctx, x, y, step * .22)); break;
-    case 'checker': ctx.globalAlpha = .12; for (let j = 0; j * step < h; j++) for (let i = 0; i * step < w; i++) if ((i + j) % 2 === 0) ctx.fillRect(i * step, j * step, step, step); break;
-    case 'stripes': ctx.globalAlpha = .12; for (let x = 0; x < w; x += step * 2) ctx.fillRect(x, 0, step, h); break;
+    case 'checker': ctx.globalAlpha = aK(.12); for (let j = 0; j * step < h; j++) for (let i = 0; i * step < w; i++) if ((i + j) % 2 === 0) ctx.fillRect(i * step, j * step, step, step); break;
+    case 'grid': ctx.globalAlpha = aK(.2); ctx.lineWidth = Math.max(1, step * .04); ctx.beginPath(); for (let x = 0; x < w; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, h); } for (let y = 0; y < h; y += step) { ctx.moveTo(0, y); ctx.lineTo(w, y); } ctx.stroke(); break;
+    case 'plus': stagger(.3, (x, y) => { ctx.fillRect(x - step * .12, y - step * .03, step * .24, step * .06); ctx.fillRect(x - step * .03, y - step * .12, step * .06, step * .24); }); break;
+    case 'bubbles': stagger(.3, (x, y) => { ctx.lineWidth = Math.max(1, step * .04); ctx.beginPath(); ctx.arc(x, y, step * .2, 0, Math.PI * 2); ctx.stroke(); }); break;
+    case 'diamond': stagger(.28, (x, y) => { ctx.beginPath(); ctx.moveTo(x, y - step * .16); ctx.lineTo(x + step * .12, y); ctx.lineTo(x, y + step * .16); ctx.lineTo(x - step * .12, y); ctx.closePath(); ctx.fill(); }); break;
+    case 'diag': ctx.globalAlpha = aK(.14); ctx.lineWidth = step * .25; for (let d = -h; d < w; d += step * 1.2) { ctx.beginPath(); ctx.moveTo(d, 0); ctx.lineTo(d + h, h); ctx.stroke(); } break;
+    case 'stripes': ctx.globalAlpha = aK(.12); for (let x = 0; x < w; x += step * 2) ctx.fillRect(x, 0, step, h); break;
   }
   ctx.restore();
 }
@@ -2248,7 +2266,7 @@ async function renderJelly(o = {}) {
 
 const bx = () => ({ mat: S.jMat, size: S.jSize, space: S.jSpace, curve: S.jCurve, jit: S.jJit, hi: S.jHi, spark: S.jSpark, drop: S.jDrop });
 const jellyOpts = () => ({ mode: S.jMode, shape: S.jShape, text: S.jText, font: S.font, color: S.jColor, borderColor: S.jBorderColor, border: S.jBorder, gloss: S.jGloss, depth: S.depth, fat: S.jFat, puff: S.jPuff, shade: S.jShade, bounce: S.jBounce, shadowA: S.jShadowA, stripe: S.jStripe, stripeW: S.jStripeW, ...bx(), color2: S.jColor2, color3: S.jColor3, grad: S.jGrad, cols: S.jCols });
-const bannerOpts = p => ({ mode: 'text', text: S.text, font: S.font, color: p.my, border: 10, gloss: S.jGloss, depth: S.depth, fat: S.jFat, puff: S.jPuff, shade: S.jShade, bounce: S.jBounce, shadowA: S.jShadowA, stripe: S.jStripe, stripeW: S.jStripeW, ...bx() });
+const bannerOpts = p => ({ mode: 'text', text: S.text, font: S.font, color: S.bnColor || p.my, border: S.bnBorder ?? 10, borderColor: S.bnBorderColor || '#ffffff', gloss: S.jGloss, depth: S.depth, fat: S.jFat, puff: S.jPuff, shade: S.jShade, bounce: S.jBounce, shadowA: S.jShadowA, stripe: S.jStripe, stripeW: S.jStripeW, ...bx() });
 
 function fitText(ctx, text, maxW, px, weight = 600) {
   let s = px; ctx.font = `${weight} ${s}px ${S.font}`;
@@ -2271,12 +2289,12 @@ function drawTabIcon(ctx, name, color, size) {
 }
 function drawChatMock(ctx, x, y, w, h, p, banner, radius = 0) {
   ctx.save(); ctx.translate(x, y); rr(ctx, 0, 0, w, h, radius); ctx.clip();
-  const u = w / 300; drawPatternBg(ctx, w, h, p);
+  const u = w / 300; drawPatternBg(ctx, w, h, p); drawLayersSync(ctx, w, h);
   const hh = h * .085; ctx.fillStyle = p.primary; ctx.fillRect(0, 0, w, hh);
   ctx.fillStyle = p.headText; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.font = `700 ${14 * u}px ${S.font}`;
-  ctx.fillText('‹   คุณครีเอเตอร์ 🌟', 14 * u, hh / 2);
-  drawBubble(ctx, 14 * u, hh + 22 * u, 175 * u, 46 * u, p.friend, p.friendText, 'สนใจธีมนี้จังเลยค่ะ!', u);
-  drawBubble(ctx, w - 14 * u - 175 * u, hh + 82 * u, 175 * u, 46 * u, p.my, p.myText, 'ยินดีต้อนรับค่า 💕', u);
+  ctx.fillText('‹   ' + cut(S.hdrTitle, 18), 14 * u, hh / 2);
+  drawBubble(ctx, 14 * u, hh + 22 * u, 175 * u, 46 * u, p.friend, p.friendText, cut(S.friendMsg, 22), u);
+  drawBubble(ctx, w - 14 * u - 175 * u, hh + 82 * u, 175 * u, 46 * u, p.my, p.myText, cut(S.myMsg, 22), u);
   const tabH = h * .075; ctx.fillStyle = '#fff'; ctx.fillRect(0, h - tabH, w, tabH);
   const isz = tabH * .55;
   CONFIG.tabs.forEach((t, n) => {
@@ -2285,8 +2303,8 @@ function drawChatMock(ctx, x, y, w, h, p, banner, radius = 0) {
     drawTabIcon(ctx, t, n === 1 ? p.my : '#9aa3b2', isz);
     ctx.restore();
   });
-  if (banner) {
-    const bw = Math.min(w * .7, banner.width * ((h * .09) / banner.height));
+  if (banner && S.bnShow) {
+    const bw = Math.min(w * .7, banner.width * ((h * .09 * (S.bnScale || 100) / 100) / banner.height));
     const bh = bw * banner.height / banner.width;
     ctx.drawImage(banner, (w - bw) / 2, h - tabH - bh - 8 * u, bw, bh);
   }
@@ -2364,12 +2382,14 @@ function renderPreview() {
   });
   document.querySelectorAll('#passDots > div').forEach(d => d.style.backgroundColor = p.passText + '99');
 
+  if (window.__ltRenderExtra) window.__ltRenderExtra();
   const tok = ++bannerTok;
   renderJelly(bannerOpts(p)).then(cv => {
     if (tok !== bannerTok) return;
     lastBanner = cv;
     $('banner').src = cv.toDataURL('image/png');
-  });
+    if (window.__ltRenderExtra) window.__ltRenderExtra();
+  }).catch(err => { console.error(err); toast('สร้างป้ายไม่สำเร็จ: ' + err.message); });
 }
 
 function renderJellyPreview() {
@@ -2381,7 +2401,7 @@ function renderJellyPreview() {
     x.clearRect(0, 0, v.width, v.height);
     const s = Math.min(v.width / cv.width, v.height / cv.height);
     x.drawImage(cv, (v.width - cv.width * s) / 2, (v.height - cv.height * s) / 2, cv.width * s, cv.height * s);
-  });
+  }).catch(err => { console.error(err); toast('สร้างเยลลี่ไม่สำเร็จ: ' + err.message); });
 }
 
 function renderContrast() {
@@ -2403,13 +2423,14 @@ function refresh() {
   cancelAnimationFrame(raf);
   raf = requestAnimationFrame(() => {
     renderPreview();
+    if (window.__ltPost) window.__ltPost();
     renderContrast();
     syncJellyUI();
     if (tab === 4) renderJellyPreview();
   });
   clearTimeout(saveT);
   saveT = setTimeout(() => {
-    try { localStorage.setItem(CONFIG.storageKey, JSON.stringify(S)); } catch (e) { }
+    try { localStorage.setItem(CONFIG.storageKey, JSON.stringify(S)); } catch (e) { toastQuota(); }
   }, 500);
 }
 
@@ -2449,7 +2470,7 @@ function applyWordToDestination(word, dest = currentWordDest, syncStyle = true) 
     }
   }
   if (dest === 'my' || dest === 'all') {
-    $('myBubble').textContent = word;
+    S.myMsg = word; $('myBubble').textContent = word;
   }
   if (dest === 'name' || dest === 'all') {
     S.name = word + ' Theme';
@@ -2610,6 +2631,7 @@ function syncControls() {
   });
   CHECKS.forEach(k => { if ($(k)) $(k).checked = !!S[k]; });
   syncJellyUI();
+  if (window.__ltSyncFree) window.__ltSyncFree();
 }
 
 function bindFields() {
@@ -2677,21 +2699,27 @@ function buildNumpad() {
 function switchTab(n) {
   tab = n;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', +b.dataset.tab === n));
-  [1, 2, 3, 4].forEach(i => $('pane' + i).style.display = i === n ? 'block' : 'none');
+  [1, 2, 3, 4, 5, 6].forEach(i => { if ($('pane' + i)) $('pane' + i).style.display = i === n ? 'block' : 'none'; });
   setView(n === 3 ? 'pass' : 'chat');
   if (n === 4) renderJellyPreview();
+  if (n === 5) renderLayerUI();
   const prog = $('stepProgressFill');
-  if (prog) prog.style.width = (n * 25) + '%';
+  if (prog) prog.style.width = (n * 100 / 6) + '%';
   const leftCol = $('leftCol');
   if (leftCol) leftCol.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function setView(v) {
   view = v;
-  $('chatView').style.display = v === 'chat' ? 'flex' : 'none';
-  $('passView').style.display = v === 'pass' ? 'flex' : 'none';
-  $('vChat').className = 'btn ' + (v === 'chat' ? 'btn-primary' : 'btn-outline');
-  $('vPass').className = 'btn ' + (v === 'pass' ? 'btn-primary' : 'btn-outline');
+  const screens = { chat: 'chatView', pass: 'passView', friends: 'friendsView', timeline: 'timelineView' };
+  const btns = { chat: 'vChat', pass: 'vPass', friends: 'vFriends', timeline: 'vTimeline' };
+  Object.keys(screens).forEach(k => {
+    const el = $(screens[k]);
+    if (el) el.style.display = k === v ? 'flex' : 'none';
+    const b = $(btns[k]);
+    if (b) b.className = 'btn ' + (k === v ? 'btn-primary' : 'btn-outline');
+  });
+  if (window.__ltRenderExtra) window.__ltRenderExtra();
 }
 
 function setBgFromDataUrl(dataUrl) {
@@ -2724,6 +2752,7 @@ function sendAsset(name, canvas) {
 
 async function buildThemeZip() {
   await ensureFonts(S.font);
+  await prepareLayers();
   if (!window.JSZip) throw new Error('กำลังโหลดไลบรารี ZIP กรุณาลองใหม่อีกครั้ง');
   const p = pal(), zip = new JSZip(), img = zip.folder('images'), ex = zip.folder('extras');
   const banner = await renderJelly(bannerOpts(p));
@@ -2732,7 +2761,7 @@ async function buildThemeZip() {
   await add(img, 'ios_thumbnail.png', sz.iosThumb, (c, w, h) => drawChatMock(c, 0, 0, w, h, p, banner));
   await add(img, 'android_thumbnail.png', sz.androidThumb, (c, w, h) => drawChatMock(c, 0, 0, w, h, p, banner));
   await add(img, 'store_thumbnail.png', sz.storeThumb, (c, w, h) => drawChatMock(c, 0, 0, w, h, p, banner));
-  await add(img, 'chat_bg.png', sz.chatBg, (c, w, h) => drawPatternBg(c, w, h, p));
+  await add(img, 'chat_bg.png', sz.chatBg, (c, w, h) => { drawPatternBg(c, w, h, p); drawLayersSync(c, w, h); });
   await add(img, 'passcode_bg.png', sz.passcodeBg, (c, w, h) => { c.fillStyle = p.passBg; c.fillRect(0, 0, w, h); });
   for (let d = 0; d <= 9; d++) await add(img, `passcode_btn_${d}.png`, sz.numpad, (c, w, h) => drawNumpad(c, w, h, d, p));
   for (const t of CONFIG.tabs) {
@@ -2790,9 +2819,11 @@ function init() {
   $('btnPrevStep3')?.addEventListener('click', () => switchTab(2));
   $('btnNextStep3')?.addEventListener('click', () => switchTab(4));
   $('btnPrevStep4')?.addEventListener('click', () => switchTab(3));
-  $('btnFinishExport')?.addEventListener('click', () => buildThemeZip());
+  $('btnFinishExport')?.addEventListener('click', () => $('btnExport').click());
   $('vChat').addEventListener('click', () => setView('chat'));
   $('vPass').addEventListener('click', () => setView('pass'));
+  $('vFriends').addEventListener('click', () => setView('friends'));
+  $('vTimeline').addEventListener('click', () => setView('timeline'));
   $('vDark').addEventListener('click', () => {
     dark = !dark;
     $('vDark').className = 'btn ' + (dark ? 'btn-primary' : 'btn-outline');
@@ -3038,56 +3069,33 @@ window.LineThemeStudio = {
 
   
   /* ===================== EXTENDED 4-SCREEN VIEWS ===================== */
-  let currentPreviewView = 'chat';
-  const previewButtons = {
-    chat: $('vChat'),
-    pass: $('vPass'),
-    friends: $('vFriends'),
-    timeline: $('vTimeline')
-  };
-  const previewScreens = {
-    chat: $('chatView'),
-    pass: $('passView'),
-    friends: $('friendsView'),
-    timeline: $('timelineView')
-  };
-
-  function setPreviewView(v) {
-    currentPreviewView = v;
-    Object.keys(previewScreens).forEach(k => {
-      if (previewScreens[k]) previewScreens[k].style.display = k === v ? (k === 'chat' || k === 'pass' ? 'flex' : 'flex') : 'none';
-      if (previewButtons[k]) previewButtons[k].className = 'btn ' + (k === v ? 'btn-primary' : 'btn-outline');
-    });
-    renderExtraViews();
-  }
-
-  $('vChat').addEventListener('click', () => setPreviewView('chat'));
-  $('vPass').addEventListener('click', () => setPreviewView('pass'));
-  $('vFriends').addEventListener('click', () => setPreviewView('friends'));
-  $('vTimeline').addEventListener('click', () => setPreviewView('timeline'));
-
   function renderExtraViews() {
     const p = pal(dark);
-    // Friends view
-    if ($('friendsHeader')) {
-      $('friendsHeader').style.backgroundColor = p.primary;
-      $('friendsHeader').style.color = p.headText;
-    }
-    if ($('friendsTabBar')) {
-      $('friendsTabBar').style.backgroundColor = dark ? '#141e1b' : '#ffffff';
-    }
-    // Timeline view
-    if ($('timelineHeader')) {
-      $('timelineHeader').style.backgroundColor = p.primary;
-      $('timelineHeader').style.color = p.headText;
-    }
-    if ($('timelineTabBar')) {
-      $('timelineTabBar').style.backgroundColor = dark ? '#141e1b' : '#ffffff';
-    }
+    const screenBg = dark ? '#1a2420' : null;
+    const screenText = dark ? '#e8f0ec' : '';
+    const fv = $('friendsView'), tv = $('timelineView');
+    if (fv) { fv.style.backgroundColor = screenBg || '#ffffff'; fv.style.color = screenText; }
+    if (tv) { tv.style.backgroundColor = screenBg || '#f5f4ed'; tv.style.color = screenText; }
+    ['friendsHeader', 'timelineHeader'].forEach(id => {
+      const el = $(id);
+      if (el) { el.style.backgroundColor = p.primary; el.style.color = p.headText; }
+    });
+    ['friendsTabBar', 'timelineTabBar'].forEach(id => {
+      const el = $(id);
+      if (el) el.style.backgroundColor = dark ? '#141e1b' : '#ffffff';
+    });
+    document.querySelectorAll('#friendsView .friend-name').forEach(el => el.style.color = dark ? '#e8f0ec' : '#26483e');
+    document.querySelectorAll('#friendsView .friend-status').forEach(el => el.style.color = dark ? 'rgba(232,240,236,.6)' : '');
+    document.querySelectorAll('#timelineView .voom-card').forEach(el => {
+      el.style.backgroundColor = dark ? '#243029' : '#ffffff';
+      el.style.color = dark ? '#e8f0ec' : '';
+    });
+    if ($('voomPostText')) $('voomPostText').style.color = dark ? '#e8f0ec' : '#26483e';
     if ($('voomPostImg') && lastBanner) {
       $('voomPostImg').src = lastBanner.toDataURL('image/png');
     }
   }
+  window.__ltRenderExtra = renderExtraViews;
 
   /* ===================== DAILY AFFIRMATIONS ===================== */
   const DAILY_AFFIRMATIONS = [
@@ -3497,7 +3505,401 @@ Price: 50 Coins / 59 THB`;
     });
   });
 
+
+  /* ================= FREE STUDIO v2.5 : เลเยอร์จัดวางอิสระ + ปรับแต่งเพิ่ม ================= */
+  const layerCache = new Map();
+  let ovTok = 0, ovSig = '', selLayer = -1, quotaWarned = false, persistT = 0;
+  const uid = () => 'L' + Math.random().toString(36).slice(2, 8);
+  const cut = (t, n) => { t = String(t || ''); return t.length > n ? t.slice(0, n - 1) + '…' : t; };
+  const curLayer = () => (S.layers || [])[selLayer];
+
+  function toastQuota() {
+    if (quotaWarned) return; quotaWarned = true;
+    toast('พื้นที่เก็บในเบราว์เซอร์เต็ม ระบบบันทึกอัตโนมัติไม่ได้ กรุณากด "เซฟโปรเจกต์" เก็บไว้เอง');
+  }
+  function persist() { try { localStorage.setItem(CONFIG.storageKey, JSON.stringify(S)); } catch (e) { toastQuota(); } }
+  function persistSoon() { clearTimeout(persistT); persistT = setTimeout(persist, 400); }
+
+  function layerStyleKey() {
+    return JSON.stringify([S.font, S.jBorderColor, S.jBorder, S.jGloss, S.depth, S.jFat, S.jPuff, S.jShade, S.jBounce, S.jShadowA,
+      S.jStripe, S.jStripeW, S.jSize, S.jSpace, S.jCurve, S.jJit, S.jHi, S.jSpark, S.jDrop, S.jColor2, S.jColor3, S.jGrad, S.jCols, S.jMat]);
+  }
+  function layerKey(L) {
+    if (L.type === 'image') return 'img:' + L.id + ':' + (L.imgVer || 0);
+    const base = JSON.stringify([L.type, L.text, L.shape, L.color, L.mat || '', L.stroke || '']);
+    return base + (L.type === 'emoji' ? '|' + S.font : '|' + layerStyleKey());
+  }
+  async function layerCanvas(L) {
+    const key = layerKey(L);
+    const hit = layerCache.get(key);
+    if (hit) return hit.cv;
+    let cv = null;
+    try {
+      if (L.type === 'jelly') {
+        cv = await renderJelly({ ...jellyOpts(), mode: 'text', text: L.text || 'OK', color: L.color, mat: L.mat || S.jMat });
+      } else if (L.type === 'shape') {
+        cv = await renderJelly({ ...jellyOpts(), mode: 'shape', shape: L.shape || 'heart', color: L.color, mat: L.mat || S.jMat });
+      } else if (L.type === 'emoji') {
+        const txt = L.text || '✨', px = 200, fam = S.font + ", 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji'";
+        await ensureFonts(S.font, txt);
+        const m = mkCanvas(8, 8).getContext('2d'); m.font = `700 ${px}px ${fam}`;
+        const tw = Math.max(60, Math.ceil(m.measureText(txt).width)), pad = 30;
+        cv = mkCanvas(tw + pad * 2, Math.ceil(px * 1.4) + pad * 2);
+        const x = cv.getContext('2d'); x.font = m.font; x.textAlign = 'center'; x.textBaseline = 'middle';
+        x.lineJoin = 'round'; x.fillStyle = L.color || '#d5876a';
+        if (L.stroke) { x.lineWidth = 18; x.strokeStyle = L.stroke; x.strokeText(txt, cv.width / 2, cv.height / 2); }
+        x.fillText(txt, cv.width / 2, cv.height / 2);
+      } else if (L.type === 'image' && L.img) {
+        cv = await new Promise((res, rej) => {
+          const im = new Image();
+          im.onload = () => { const c = mkCanvas(im.naturalWidth, im.naturalHeight); c.getContext('2d').drawImage(im, 0, 0); res(c); };
+          im.onerror = () => rej(new Error('image load'));
+          im.src = L.img;
+        });
+      }
+    } catch (err) { console.error('layer render', err); cv = null; }
+    if (cv) { layerCache.set(key, { cv, url: '' }); if (layerCache.size > 80) layerCache.delete(layerCache.keys().next().value); }
+    return cv;
+  }
+  function layerUrl(L, cv) {
+    const e = layerCache.get(layerKey(L)); if (!e) return cv.toDataURL('image/png');
+    if (!e.url) e.url = cv.toDataURL('image/png');
+    return e.url;
+  }
+  async function prepareLayers() { for (const L of (S.layers || [])) await layerCanvas(L); }
+  function drawLayersSync(ctx, w, h) {
+    for (const L of (S.layers || [])) {
+      const e = layerCache.get(layerKey(L)); if (!e || !e.cv) continue;
+      const lw = w * L.size / 100, lh = lw * e.cv.height / e.cv.width;
+      ctx.save(); ctx.globalAlpha = clamp(L.opacity / 100, 0, 1);
+      ctx.translate(w * L.x / 100, h * L.y / 100); ctx.rotate(L.rot * Math.PI / 180); ctx.scale(L.flip ? -1 : 1, 1);
+      ctx.drawImage(e.cv, -lw / 2, -lh / 2, lw, lh); ctx.restore();
+    }
+  }
+
+  /* ---------- overlay บนโทรศัพท์ตัวอย่าง ---------- */
+  function ensureOverlay() {
+    const box = $('chatBgBox'); if (!box) return null;
+    let ov = $('layerOverlay');
+    if (!ov) {
+      box.style.position = 'relative';
+      ov = document.createElement('div'); ov.id = 'layerOverlay';
+      ov.style.cssText = 'position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;';
+      [...box.children].forEach(c => { c.style.position = 'relative'; c.style.zIndex = '1'; c.style.pointerEvents = 'none'; });
+      box.appendChild(ov);
+      box.addEventListener('pointerdown', e => { if (e.target === box || e.target === ov) { if (selLayer !== -1) { selLayer = -1; renderLayerUI(); renderOverlay(); } } });
+    }
+    return ov;
+  }
+  function styleLayerEl(im, L, i) {
+    im.style.cssText = `position:absolute;left:${L.x}%;top:${L.y}%;width:${L.size}%;height:auto;transform:translate(-50%,-50%) rotate(${L.rot}deg) scaleX(${L.flip ? -1 : 1});opacity:${L.opacity / 100};pointer-events:auto;touch-action:none;cursor:grab;user-select:none;-webkit-user-drag:none;` +
+      (i === selLayer ? 'outline:2px dashed #d5876a;outline-offset:3px;border-radius:6px;' : '');
+  }
+  async function renderOverlay() {
+    const ov = ensureOverlay(); if (!ov) return;
+    const layers = S.layers || [];
+    const sig = layerStyleKey() + JSON.stringify(layers.map(L => [L.id, L.type, L.text, L.shape, L.color, L.mat, L.stroke, L.imgVer]));
+    const tok = ++ovTok;
+    if (sig !== ovSig) {
+      const items = [];
+      for (const L of layers) { const cv = await layerCanvas(L); if (tok !== ovTok) return; items.push([L, cv]); }
+      ovSig = sig; ov.innerHTML = '';
+      items.forEach(([L, cv], i) => {
+        if (!cv) return;
+        const im = new Image(); im.draggable = false; im.alt = ''; im.src = layerUrl(L, cv); im.dataset.i = i;
+        im.addEventListener('pointerdown', ev => startDrag(ev, i));
+        ov.appendChild(im);
+      });
+    }
+    [...ov.children].forEach(im => { const i = +im.dataset.i; if (layers[i]) styleLayerEl(im, layers[i], i); });
+  }
+  function startDrag(ev, i) {
+    ev.preventDefault();
+    const L = (S.layers || [])[i]; if (!L) return;
+    if (selLayer !== i) { selLayer = i; renderLayerUI(); }
+    [...$('layerOverlay').children].forEach(im => styleLayerEl(im, S.layers[+im.dataset.i], +im.dataset.i));
+    const r = $('layerOverlay').getBoundingClientRect(), sx = ev.clientX, sy = ev.clientY, ox = L.x, oy = L.y, el = ev.currentTarget;
+    try { el.setPointerCapture(ev.pointerId); } catch (e) { }
+    const mv = e => {
+      L.x = clamp(Math.round((ox + (e.clientX - sx) / r.width * 100) * 10) / 10, -10, 110);
+      L.y = clamp(Math.round((oy + (e.clientY - sy) / r.height * 100) * 10) / 10, -10, 110);
+      styleLayerEl(el, L, i); syncLayerEditorPos();
+    };
+    const up = () => { el.removeEventListener('pointermove', mv); el.removeEventListener('pointerup', up); el.removeEventListener('pointercancel', up); persist(); };
+    el.addEventListener('pointermove', mv); el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+  }
+
+  /* ---------- จัดการเลเยอร์ ---------- */
+  function addLayer(type, extra) {
+    S.layers = S.layers || [];
+    if (S.layers.length >= 30) { toast('เพิ่มได้สูงสุด 30 ชิ้น'); return; }
+    const base = {
+      id: uid(), type, text: type === 'jelly' ? (S.jText || S.text || 'น่ารัก') : (type === 'emoji' ? '✨' : ''),
+      shape: S.jShape || 'heart', color: S.jColor || S.my, mat: '', stroke: '', x: 50, y: 30 + (S.layers.length % 6) * 9,
+      size: type === 'image' ? 40 : 45, rot: 0, opacity: 100, flip: 0
+    };
+    S.layers.push({ ...base, ...(extra || {}) }); selLayer = S.layers.length - 1;
+    refresh(); renderLayerUI(); setMobileView && setMobileView('preview');
+  }
+  function removeLayer() { const L = curLayer(); if (!L) return; S.layers.splice(selLayer, 1); selLayer = Math.min(selLayer, S.layers.length - 1); ovSig = ''; refresh(); renderLayerUI(); }
+  function dupLayer() { const L = curLayer(); if (!L) return; S.layers.push({ ...L, id: uid(), x: clamp(L.x + 5, -10, 110), y: clamp(L.y + 5, -10, 110) }); selLayer = S.layers.length - 1; refresh(); renderLayerUI(); }
+  function moveLayer(toFront) {
+    const L = curLayer(); if (!L) return;
+    S.layers.splice(selLayer, 1); if (toFront) S.layers.push(L); else S.layers.unshift(L);
+    selLayer = toFront ? S.layers.length - 1 : 0; ovSig = ''; refresh(); renderLayerUI();
+  }
+  function selectLayer(i) { selLayer = i; renderLayerUI(); renderOverlay(); }
+
+  function renderLayerList() {
+    const box = $('lyList'); if (!box) return;
+    const ic = { jelly: '🎈', shape: '💗', emoji: '😀', image: '🖼️' };
+    box.innerHTML = '';
+    (S.layers || []).forEach((L, i) => {
+      const b = document.createElement('button'); b.type = 'button';
+      b.className = 'ly-chip' + (i === selLayer ? ' on' : '');
+      b.textContent = (ic[L.type] || '•') + ' ' + cut(L.type === 'shape' ? L.shape : (L.type === 'image' ? 'รูป ' + (i + 1) : L.text), 8);
+      b.addEventListener('click', () => selectLayer(i));
+      box.appendChild(b);
+    });
+  }
+  function syncLayerEditorPos() {
+    const L = curLayer(); if (!L) return;
+    [['lyX', 'x', '%'], ['lyY', 'y', '%'], ['lySize', 'size', '%'], ['lyRot', 'rot', '°'], ['lyOpacity', 'opacity', '%']].forEach(([id, k, u]) => {
+      if ($(id)) { $(id).value = L[k]; $(id + 'Val').textContent = L[k] + u; }
+    });
+  }
+  function renderLayerUI() {
+    renderLayerList();
+    const L = curLayer(), ed = $('lyEditor'); if (!ed) return;
+    ed.style.display = L ? 'block' : 'none'; $('lyEmpty').style.display = (S.layers || []).length ? 'none' : 'block';
+    $('lyHint').style.display = (S.layers || []).length && !L ? 'block' : 'none';
+    if (!L) return;
+    const t = L.type;
+    $('lyTextWrap').style.display = (t === 'jelly' || t === 'emoji') ? 'block' : 'none';
+    $('lyShapeWrap').style.display = t === 'shape' ? 'block' : 'none';
+    $('lyMatWrap').style.display = (t === 'jelly' || t === 'shape') ? 'block' : 'none';
+    $('lyColorWrap').style.display = (t === 'jelly' || t === 'shape' || t === 'emoji') ? 'block' : 'none';
+    $('lyStrokeWrap').style.display = t === 'emoji' ? 'block' : 'none';
+    $('lyText').value = L.text || ''; $('lyShape').value = L.shape || 'heart'; $('lyMat').value = L.mat || '';
+    $('lyColor').value = L.color || '#d5876a'; $('lyColorText').value = L.color || '#d5876a';
+    $('lyStroke').checked = !!L.stroke; $('lyFlip').checked = !!L.flip;
+    syncLayerEditorPos();
+  }
+
+  /* ---------- สร้างหน้า UI ใหม่ (ขั้น 5 + 6) ---------- */
+  const sec = t => `<div style="font-weight:700;color:var(--primary);font-size:13px;border-bottom:1px solid var(--border);padding-bottom:8px;margin:20px 0 12px;">${t}</div>`;
+  const fSlider = (id, label, min, max, step) => `<div class="form-group"><label class="form-label">${label} <span id="${id}Val" class="val"></span></label><input type="range" id="${id}" min="${min}" max="${max}" step="${step || 1}" class="range" style="margin-top:10px;"></div>`;
+  const fText = (id, label, ph) => `<div class="form-group"><label class="form-label">${label}</label><input type="text" id="${id}" class="input" placeholder="${ph || ''}"></div>`;
+  const fColor = (id, label, auto) => `<div class="form-group"><label class="form-label">${label}</label><div class="color-field"><input type="color" id="${id}" class="color-picker"><input type="text" id="${id}Text" maxlength="7" class="input" style="font-family:monospace;letter-spacing:.04em;">${auto ? `<button type="button" class="btn btn-soft" id="${id}Auto" style="min-height:38px;white-space:nowrap;">อัตโนมัติ</button>` : ''}</div></div>`;
+  const fSelect = (id, label, opts) => `<div class="form-group"><label class="form-label">${label}</label><select id="${id}" class="select">${opts.map(o => `<option value="${o[0]}">${o[1]}</option>`).join('')}</select></div>`;
+  const fCheck = (id, label) => `<label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;margin:6px 0 12px;cursor:pointer;"><input type="checkbox" id="${id}"> ${label}</label>`;
+
+  const ADV = [
+    ['bgMode', 'bgMode', 'sel'], ['bgC2', 'bgC2', 'color'], ['bgAngle', 'bgAngle', 'num', '°'],
+    ['bgZoom', 'bgZoom', 'num', '%'], ['bgX', 'bgX', 'num', '%'], ['bgY', 'bgY', 'num', '%'], ['bgBlur', 'bgBlur', 'num', 'px'],
+    ['patColor', 'patColor', 'color'], ['patAlpha', 'patAlpha', 'num', '%'],
+    ['hdrTitle', 'hdrTitle', 'text'], ['friendName', 'friendName', 'text'], ['friendMsg', 'friendMsg', 'text'], ['myMsg', 'myMsg', 'text'],
+    ['bnShow', 'bnShow', 'check'], ['bnScale', 'bnScale', 'num', '%'], ['bnColor', 'bnColor', 'color'], ['bnBorder', 'bnBorder', 'num', 'px'], ['bnBorderColor', 'bnBorderColor', 'color']
+  ];
+  const ADV_AUTO_DEFAULT = { patColor: '#d5876a', bnColor: '#d5876a', bgC2: '#ffd9e8', bnBorderColor: '#ffffff' };
+
+  function addFontOption(val, label) {
+    const sel = $('fontSelect'); const o = document.createElement('option'); o.value = val; o.textContent = label; sel.appendChild(o);
+    sel.value = val; S.font = val; layerCache.clear(); ovSig = ''; refresh();
+  }
+
+  function buildFreePanes() {
+    const st = document.createElement('style'); st.id = 'ltFreeCss';
+    st.textContent = `.tabs-nav{grid-template-columns:repeat(6,1fr)}.tabs-nav .tab-btn{font-size:11.5px;padding:9px 3px;gap:3px}
+.ly-add{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.ly-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.ly-chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--foreground)}
+.ly-chip.on{background:var(--primary);color:#fff;border-color:var(--primary)}.ly-note{font-size:12px;color:var(--muted);line-height:1.6}
+.ly-box{background:var(--card-sub);border:1px solid var(--border-sub);border-radius:14px;padding:14px}`;
+    document.head.appendChild(st);
+
+    const nav = document.querySelector('.tabs-nav');
+    [['5', '🧩 จัดวางอิสระ', 'จัดวาง'], ['6', '⚙️ ปรับแต่งเพิ่ม', 'ปรับแต่ง']].forEach(([n, full, short]) => {
+      const b = document.createElement('button'); b.className = 'tab-btn'; b.dataset.tab = n; b.title = 'ขั้นตอนที่ ' + n + ': ' + full;
+      b.innerHTML = `<span class="tab-badge">${n}</span><span class="tab-text-full">${full}</span><span class="tab-text-short">${short}</span>`;
+      b.addEventListener('click', () => switchTab(+n)); nav.appendChild(b);
+    });
+
+    const matOpts = [...$('jMat').options].map(o => `<option value="${o.value}">${o.textContent}</option>`).join('');
+    const shapeOpts = [...$('jellyShape').options].map(o => `<option value="${o.value}">${o.textContent}</option>`).join('');
+    const footer = (prev, nextHtml) => `<div class="step-nav-footer"><button type="button" class="btn btn-soft" data-go="${prev}"><span>⬅</span><span>ย้อนกลับ</span></button>${nextHtml}</div>`;
+
+    const p5 = document.createElement('div'); p5.id = 'pane5'; p5.className = 'space-y'; p5.style.display = 'none';
+    p5.innerHTML = `
+      <div style="font-weight:700;color:var(--primary);font-size:14px;border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:14px;">🧩 จัดวางอิสระ — วางอะไรตรงไหนก็ได้</div>
+      <p class="ly-note" style="margin:0 0 12px;">กดเพิ่มชิ้นงาน แล้ว <b>ลากบนโทรศัพท์ตัวอย่าง</b> ได้เลย ชิ้นงานจะถูกรวมในรูปพื้นหลังแชต (chat_bg.png) และรูปตัวอย่างธีมตอนส่งออก</p>
+      <div class="ly-add">
+        <button type="button" class="btn btn-primary" id="lyAddJelly">🎈 + ข้อความเยลลี่</button>
+        <button type="button" class="btn btn-primary" id="lyAddShape">💗 + รูปทรงเยลลี่</button>
+        <button type="button" class="btn btn-soft" id="lyAddEmoji">😀 + อีโมจิ / ข้อความ</button>
+        <button type="button" class="btn btn-soft" id="lyAddImage">🖼️ + รูปจากเครื่อง</button>
+      </div>
+      <input type="file" id="lyImgFile" accept="image/*" style="display:none">
+      <div id="lyEmpty" class="ly-note" style="text-align:center;padding:16px;">ยังไม่มีชิ้นงาน — ลองกดเพิ่มข้างบนได้เลย</div>
+      <div id="lyHint" class="ly-note" style="display:none;margin-bottom:8px;">แตะชิ้นงานในรายการหรือบนโทรศัพท์เพื่อแก้ไข</div>
+      <div id="lyList" class="ly-list"></div>
+      <div id="lyEditor" class="ly-box" style="display:none;">
+        <div id="lyTextWrap" class="form-group"><label class="form-label">ข้อความ</label><input type="text" id="lyText" class="input"></div>
+        <div id="lyShapeWrap" class="form-group"><label class="form-label">รูปทรง</label><select id="lyShape" class="select">${shapeOpts}</select></div>
+        <div id="lyMatWrap" class="form-group"><label class="form-label">วัสดุผิว</label><select id="lyMat" class="select"><option value="">ตามที่ตั้งในขั้นตอน 4</option>${matOpts}</select></div>
+        <div id="lyColorWrap" class="form-group"><label class="form-label">สี</label><div class="color-field"><input type="color" id="lyColor" class="color-picker"><input type="text" id="lyColorText" maxlength="7" class="input" style="font-family:monospace;"></div></div>
+        <div id="lyStrokeWrap">${fCheck('lyStroke', 'ใส่ขอบขาวให้ตัวอักษร / อีโมจิ')}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 14px;">
+          ${fSlider('lyX', 'ตำแหน่งซ้าย–ขวา', -10, 110, 0.5)}${fSlider('lyY', 'ตำแหน่งบน–ล่าง', -10, 110, 0.5)}
+          ${fSlider('lySize', 'ขนาด', 5, 150)}${fSlider('lyRot', 'หมุน', -180, 180)}
+          ${fSlider('lyOpacity', 'ความทึบ', 10, 100)}<div style="padding-top:22px;">${fCheck('lyFlip', 'กลับด้านซ้าย–ขวา')}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">
+          <button type="button" class="btn btn-soft" id="lyDup" style="font-size:12px;min-height:36px;">📄 ทำซ้ำ</button>
+          <button type="button" class="btn btn-soft" id="lyFront" style="font-size:12px;min-height:36px;">⬆ ขึ้นหน้า</button>
+          <button type="button" class="btn btn-soft" id="lyBack" style="font-size:12px;min-height:36px;">⬇ ไปหลัง</button>
+          <button type="button" class="btn btn-outline" id="lyDel" style="font-size:12px;min-height:36px;">🗑️ ลบ</button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-outline" id="lyPreviewBtn" style="margin-top:14px;font-size:12px;">📱 ดูตัวอย่างบนโทรศัพท์</button>
+      ${footer(4, '<button type="button" class="btn btn-primary" data-go="6"><span>ถัดไป: 6. ปรับแต่งเพิ่ม</span><span>➔</span></button>')}`;
+
+    const p6 = document.createElement('div'); p6.id = 'pane6'; p6.className = 'space-y'; p6.style.display = 'none';
+    p6.innerHTML = `
+      <div style="font-weight:700;color:var(--primary);font-size:14px;border-bottom:1px solid var(--border);padding-bottom:10px;">⚙️ ปรับแต่งเพิ่มเติม</div>
+      ${sec('🖼️ พื้นหลังแชต')}
+      ${fSelect('bgMode', 'แบบสีพื้นหลัง', [['solid', 'สีเดียว'], ['gradient', 'ไล่สี 2 สี']])}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 14px;">${fColor('bgC2', 'สีปลายทางของไล่สี')}${fSlider('bgAngle', 'ทิศทางไล่สี', 0, 360)}</div>
+      <p class="ly-note" style="margin:6px 0 10px;">ถ้าใส่รูปพื้นหลัง (ขั้นตอน 2) ปรับตำแหน่งได้ด้านล่าง</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 14px;">${fSlider('bgZoom', 'ซูมรูป', 100, 300)}${fSlider('bgBlur', 'เบลอรูป', 0, 20)}${fSlider('bgX', 'เลื่อนรูป ซ้าย–ขวา', 0, 100)}${fSlider('bgY', 'เลื่อนรูป บน–ล่าง', 0, 100)}</div>
+      ${sec('✨ ลวดลาย')}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 14px;">${fColor('patColor', 'สีลวดลาย', true)}${fSlider('patAlpha', 'ความเข้มลวดลาย', 20, 300)}</div>
+      ${sec('💬 ข้อความในตัวอย่างแชต')}
+      ${fText('hdrTitle', 'ชื่อบนหัวแชต')}${fText('friendName', 'ชื่อเพื่อน')}${fText('friendMsg', 'ข้อความของเพื่อน')}${fText('myMsg', 'ข้อความของเรา')}
+      ${sec('🏷️ ป้ายเยลลี่ใต้แชต')}
+      ${fCheck('bnShow', 'แสดงป้ายใต้แชต')}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 14px;">${fSlider('bnScale', 'ขนาดป้าย', 50, 150)}${fSlider('bnBorder', 'ความหนาขอบ', 0, 24)}${fColor('bnColor', 'สีป้าย', true)}${fColor('bnBorderColor', 'สีขอบ')}</div>
+      ${sec('🔤 ฟอนต์ของคุณเอง')}
+      <div class="form-group"><label class="form-label">อัปโหลดไฟล์ฟอนต์ (.ttf .otf .woff .woff2)</label><input type="file" id="fontFile" accept=".ttf,.otf,.woff,.woff2" class="input"></div>
+      <div class="form-group"><label class="form-label">หรือพิมพ์ชื่อฟอนต์ที่ติดตั้งในเครื่อง</label><div style="display:flex;gap:8px;"><input type="text" id="fontName" class="input" placeholder="เช่น Sarabun"><button type="button" class="btn btn-soft" id="fontNameBtn" style="white-space:nowrap;">ใช้ฟอนต์นี้</button></div></div>
+      <p class="ly-note">ฟอนต์ที่อัปโหลดใช้ได้ระหว่างที่เปิดหน้านี้เท่านั้น ถ้าจะใช้ต่อให้อัปโหลดใหม่ทุกครั้ง</p>
+      ${footer(5, '<button type="button" class="btn step-finish-btn" id="btnExport6"><span>บันทึก & ส่งออกธีม LINE (.ZIP)</span><span style="font-size:14px;">✅</span></button>')}`;
+
+    $('pane4').insertAdjacentElement('afterend', p5); p5.insertAdjacentElement('afterend', p6);
+    document.querySelectorAll('#pane5 [data-go],#pane6 [data-go]').forEach(b => b.addEventListener('click', () => switchTab(+b.dataset.go)));
+    $('btnExport6').addEventListener('click', () => $('btnExport').click());
+    $('lyPreviewBtn').addEventListener('click', () => setMobileView('preview'));
+
+    // ปุ่มไปขั้น 5 ท้ายขั้น 4
+    const f4 = document.querySelector('#pane4 .step-nav-footer');
+    if (f4) {
+      const go = document.createElement('button'); go.type = 'button'; go.className = 'btn btn-soft'; go.innerHTML = '<span>🧩 ไปจัดวางอิสระ</span><span>➔</span>';
+      go.addEventListener('click', () => switchTab(5)); f4.insertBefore(go, f4.lastElementChild);
+    }
+
+    // ตัวเลือกลวดลายเพิ่ม
+    const ps = $('pattern');
+    [['grid', 'ลายตารางเส้น Grid'], ['plus', 'ลายเครื่องหมายบวก Plus'], ['bubbles', 'ลายวงกลมโปร่ง Bubbles'], ['diamond', 'ลายข้าวหลามตัด Diamond'], ['diag', 'ลายเฉียง Diagonal']]
+      .forEach(([v, t]) => { if (![...ps.options].some(o => o.value === v)) { const o = document.createElement('option'); o.value = v; o.textContent = t; ps.appendChild(o); } });
+
+    bindFree();
+    $('stepProgressFill') && ($('stepProgressFill').style.width = (100 / 6) + '%');
+  }
+
+  function bindFree() {
+    ADV.forEach(([id, key, type, suf]) => {
+      const el = $(id); if (!el) return;
+      const setV = v => { S[key] = v; if (suf && $(id + 'Val')) $(id + 'Val').textContent = v + suf; refresh(); };
+      if (type === 'color') {
+        el.addEventListener('input', e => { $(id + 'Text').value = e.target.value; setV(e.target.value); });
+        $(id + 'Text').addEventListener('input', e => { if (/^#[0-9a-f]{6}$/i.test(e.target.value)) { el.value = e.target.value; setV(e.target.value.toLowerCase()); } });
+        if ($(id + 'Auto')) $(id + 'Auto').addEventListener('click', () => { S[key] = ''; $(id + 'Text').value = ''; refresh(); });
+      } else if (type === 'check') el.addEventListener('change', e => setV(e.target.checked ? 1 : 0));
+      else if (type === 'sel') el.addEventListener('change', e => setV(e.target.value));
+      else el.addEventListener('input', e => setV(type === 'num' ? +e.target.value : e.target.value));
+    });
+
+    $('lyAddJelly').addEventListener('click', () => addLayer('jelly'));
+    $('lyAddShape').addEventListener('click', () => addLayer('shape'));
+    $('lyAddEmoji').addEventListener('click', () => addLayer('emoji'));
+    $('lyAddImage').addEventListener('click', () => $('lyImgFile').click());
+    $('lyImgFile').addEventListener('change', e => {
+      const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+      const r = new FileReader();
+      r.onload = ev => {
+        const im = new Image();
+        im.onload = () => {
+          const s = Math.min(1, 700 / Math.max(im.naturalWidth, im.naturalHeight)), c = mkCanvas(Math.max(1, Math.round(im.naturalWidth * s)), Math.max(1, Math.round(im.naturalHeight * s)));
+          c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+          addLayer('image', { img: c.toDataURL('image/png'), imgVer: 1 });
+        };
+        im.onerror = () => showModal('เปิดรูปไม่ได้', 'ไฟล์รูปไม่ถูกต้อง ลองไฟล์ PNG / JPG อื่น', '⚠️');
+        im.src = ev.target.result;
+      };
+      r.readAsDataURL(f);
+    });
+    [['lyX', 'x'], ['lyY', 'y'], ['lySize', 'size'], ['lyRot', 'rot'], ['lyOpacity', 'opacity']].forEach(([id, k]) => {
+      $(id).addEventListener('input', e => { const L = curLayer(); if (!L) return; L[k] = +e.target.value; syncLayerEditorPos(); renderOverlay(); persistSoon(); });
+    });
+    $('lyText').addEventListener('input', e => { const L = curLayer(); if (!L) return; L.text = e.target.value; renderLayerList(); renderOverlay(); persistSoon(); });
+    $('lyShape').addEventListener('change', e => { const L = curLayer(); if (!L) return; L.shape = e.target.value; renderLayerList(); renderOverlay(); persistSoon(); });
+    $('lyMat').addEventListener('change', e => { const L = curLayer(); if (!L) return; L.mat = e.target.value; renderOverlay(); persistSoon(); });
+    $('lyColor').addEventListener('input', e => { const L = curLayer(); if (!L) return; L.color = e.target.value; $('lyColorText').value = e.target.value; renderOverlay(); persistSoon(); });
+    $('lyColorText').addEventListener('input', e => { const L = curLayer(); if (!L || !/^#[0-9a-f]{6}$/i.test(e.target.value)) return; L.color = e.target.value.toLowerCase(); $('lyColor').value = L.color; renderOverlay(); persistSoon(); });
+    $('lyStroke').addEventListener('change', e => { const L = curLayer(); if (!L) return; L.stroke = e.target.checked ? '#ffffff' : ''; renderOverlay(); persistSoon(); });
+    $('lyFlip').addEventListener('change', e => { const L = curLayer(); if (!L) return; L.flip = e.target.checked ? 1 : 0; renderOverlay(); persistSoon(); });
+    $('lyDup').addEventListener('click', dupLayer); $('lyDel').addEventListener('click', removeLayer);
+    $('lyFront').addEventListener('click', () => moveLayer(true)); $('lyBack').addEventListener('click', () => moveLayer(false));
+
+    $('fontFile').addEventListener('change', async e => {
+      const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+      try {
+        const name = 'UserFont' + Date.now().toString(36), ff = new FontFace(name, await f.arrayBuffer());
+        await ff.load(); document.fonts.add(ff);
+        addFontOption(`'${name}', sans-serif`, '📁 ' + f.name.replace(/\.[^.]+$/, ''));
+        toast('โหลดฟอนต์สำเร็จ ✅');
+      } catch (err) { showModal('โหลดฟอนต์ไม่ได้', 'ไฟล์ฟอนต์ไม่ถูกต้องหรือเบราว์เซอร์ไม่รองรับ', '⚠️'); }
+    });
+    $('fontNameBtn').addEventListener('click', () => {
+      const n = $('fontName').value.replace(/['"\\;{}]/g, '').trim(); if (!n) return;
+      addFontOption(`'${n}', sans-serif`, '🔤 ' + n); toast('ตั้งฟอนต์ "' + n + '" แล้ว (ต้องติดตั้งในเครื่องนี้)');
+    });
+
+    if (document.fonts && document.fonts.addEventListener) {
+      let t = 0;
+      document.fonts.addEventListener('loadingdone', () => { clearTimeout(t); t = setTimeout(() => { layerCache.clear(); ovSig = ''; refresh(); }, 200); });
+    }
+  }
+
+  function syncFree() {
+    if (!$('pane5')) return;
+    ADV.forEach(([id, key, type, suf]) => {
+      const el = $(id); if (!el) return;
+      const v = S[key];
+      if (type === 'color') { el.value = v || ADV_AUTO_DEFAULT[id] || '#d5876a'; $(id + 'Text').value = v || ''; }
+      else if (type === 'check') el.checked = !!v;
+      else { el.value = v; if (suf && $(id + 'Val')) $(id + 'Val').textContent = v + suf; }
+    });
+    const fs = $('fontSelect');
+    if (fs && ![...fs.options].some(o => o.value === S.font)) { const o = document.createElement('option'); o.value = S.font; o.textContent = '🔤 ' + cut(S.font.split(',')[0].replace(/'/g, ''), 20) + ' (ที่บันทึกไว้)'; fs.appendChild(o); fs.value = S.font; }
+    if (selLayer >= (S.layers || []).length) selLayer = -1;
+    ovSig = ''; renderLayerUI();
+  }
+
+  window.__ltSyncFree = syncFree;
+  window.__ltPost = function () {
+    renderOverlay();
+    const hd = $('headerArea');
+    if (hd && hd.children[0] && hd.children[0].children[1]) hd.children[0].children[1].textContent = S.hdrTitle || '';
+    const fb = $('friendBubble');
+    if (fb) { fb.textContent = S.friendMsg || ''; const nm = fb.previousElementSibling; if (nm) nm.textContent = S.friendName || ''; }
+    const mb = $('myBubble'); if (mb) mb.textContent = S.myMsg || '';
+    const bw = $('bannerWrap'), bi = $('banner');
+    if (bw) { const hpx = Math.round(50 * (S.bnScale || 100) / 100); bw.style.display = S.bnShow ? 'flex' : 'none'; bw.style.height = hpx + 'px'; if (bi) bi.style.maxHeight = (hpx - 6) + 'px'; }
+  };
+
   init();
+  buildFreePanes();
+  syncFree();
 })();
 </script>
 </body>

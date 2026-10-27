@@ -735,24 +735,24 @@ function patchTool(html,find,repl){
   return html.replace(find,typeof repl==='function'?repl:()=>repl);
 }
 const VIEWS=[['overview','ภาพรวม']];
-const SUB=[['aigenerator','สร้างใบงานด้วย AI (ออฟไลน์)'],['handwriting','ใบงานคัดลายมือ'],['balloons','ตัวอักษรลูกโป่ง'],['linetheme','สตูดิโอธีม LINE (เยลลี่ 3D)'],['sh-home','วาดรูป: ผืนผ้าของฉัน'],['sh-studio','สตูดิโอวาดรูป'],['extras','เครื่องมือเสริม'],['typing','ฝึกพิมพ์ดีด']];
+const SUB=[['handwriting','ใบงานคัดลายมือ'],['balloons','ตัวอักษรลูกโป่ง'],['linetheme','สตูดิโอธีม LINE (เยลลี่ 3D)'],['sh-home','วาดรูป: ผืนผ้าของฉัน'],['sh-studio','สตูดิโอวาดรูป'],['extras','เครื่องมือเสริม'],['typing','ฝึกพิมพ์ดีด']];
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s),view=$('#view');
 let tT;
 function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tT);tT=setTimeout(()=>t.hidden=true,3000)}
 function route(){const h=location.hash.slice(1);return[...VIEWS,...SUB].some(v=>v[0]===h)?h:'overview'}
 function nav(){const r=route(),all=[...VIEWS,...SUB],lab=id=>(all.find(v=>v[0]===id)||[0,id])[1];
-  const G=[['เริ่มต้น',['overview']],['สร้างสื่อการเรียนด้วย AI (ออฟไลน์)',['aigenerator','handwriting','balloons','linetheme']],['วาดรูป (SkillHub)',['sh-home','sh-studio']],['ใบงาน เกม และคลังผลงาน',['extras']],['ฝึกทักษะ',['typing']]];
-  const IC={overview:'🏠',aigenerator:'🤖',handwriting:'✍️',balloons:'🎈',linetheme:'🎨','sh-home':'🖼️','sh-studio':'🎨',extras:'🧰',typing:'⌨️'};
+  const G=[['เริ่มต้น',['overview']],['สร้างสื่อการเรียน',['handwriting','balloons','linetheme']],['วาดรูป (SkillHub)',['sh-home','sh-studio']],['ใบงาน เกม และคลังผลงาน',['extras']],['ฝึกทักษะ',['typing']]];
+  const IC={overview:'🏠',handwriting:'✍️',balloons:'🎈',linetheme:'🎨','sh-home':'🖼️','sh-studio':'🎨',extras:'🧰',typing:'⌨️'};
   $('#nav').innerHTML=G.map(g=>`<div class="nav-group"><div class="nav-title">${g[0]}</div>${g[1].filter(id=>all.some(v=>v[0]===id)).map(id=>`<a class="nav-link ${r===id?'active':''}" href="#${id}"${r===id?' aria-current="page"':''}><span class="nav-ic" aria-hidden="true">${IC[id]||'•'}</span>${lab(id)}</a>`).join('')}</div>`).join('');
   let tb=$('#tabbar');if(!tb){tb=document.createElement('nav');tb.id='tabbar';tb.setAttribute('aria-label','เมนูลัด');document.body.appendChild(tb)}
-  const TL={overview:'ภาพรวม',aigenerator:'AI สื่อการสอน',handwriting:'ใบงาน',balloons:'ลูกโป่ง',linetheme:'ธีม LINE','sh-home':'วาดรูป'};
-  tb.innerHTML=['overview','aigenerator','handwriting','balloons','linetheme'].map(id=>`<a href="#${id}" class="${r===id?'active':''}"><span aria-hidden="true">${IC[id]}</span>${TL[id]}</a>`).join('')+'<button type="button" id="tabMore"><span aria-hidden="true">☰</span>เมนู</button>';
+  const TL={overview:'ภาพรวม',handwriting:'ใบงาน',balloons:'ลูกโป่ง',linetheme:'ธีม LINE','sh-home':'วาดรูป'};
+  tb.innerHTML=['overview','handwriting','balloons','linetheme'].map(id=>`<a href="#${id}" class="${r===id?'active':''}"><span aria-hidden="true">${IC[id]}</span>${TL[id]}</a>`).join('')+'<button type="button" id="tabMore"><span aria-hidden="true">☰</span>เมนู</button>';
   $('#tabMore').onclick=()=>menu(true);
   $('#crumb').textContent=[...VIEWS,...SUB].find(v=>v[0]===r)[1]}
 function pageHead(t,s,extra=''){return`<div class="page-heading"><div><h1>${t}</h1><p class="subtitle">${s}</p></div>${extra}</div>`}
 function overview(){
-  view.innerHTML=pageHead('ยินดีต้อนรับ','เลือกสตูดิโอที่อยากใช้ได้เลย')+`<div class="quick-actions"><a class="quick-card" href="javascript:void(0)" onclick="openInstallModal()" style="border-left:4px solid #a8512f;background:#fdf6f2;"><b>📲 ติดตั้งแอปลงมือถือ / โหลด APK</b><span>ติดตั้งแอปบน Android / iOS หรือสร้างไฟล์ APK</span></a><a class="quick-card" href="hatafuku-studio.zip" download="hatafuku-studio.zip" style="border-left:4px solid #16a34a;background:#f0fdf4;"><b>📥 ดาวน์โหลดโปรเจกต์ (.ZIP)</b><span>ดาวน์โหลดโค้ดและไฟล์ทั้งหมด (1.2 MB) ใช้งานออฟไลน์</span></a><a class="quick-card primary" href="#aigenerator" style="border-left:4px solid #10b981;background:#ecfdf5;"><b>🤖 สร้างใบงานด้วย AI (ใช้งานออฟไลน์ 100%)</b><span>สร้างชุดคำศัพท์ คันจิ และตัวอย่างประโยค แม้แตกไฟล์ไม่มีเน็ตก็ใช้ได้</span></a><a class="quick-card" href="#linetheme" style="border-left:4px solid #315f53;background:#eef4f0;"><b>🎨 สตูดิโอธีม LINE</b><span>ออกแบบธีม LINE เยลลี่ 3D ดึงคำจากตัวอักษรลูกโป่ง</span></a><a class="quick-card" href="#handwriting"><b>✍️ ใบงานคัดลายมือ</b><span>กรอกข้อความเองแล้วสร้างใบงาน</span></a><a class="quick-card" href="#balloons"><b>🎈 ตัวอักษรลูกโป่ง</b><span>ทำภาพและสติกเกอร์จากข้อความ</span></a><a class="quick-card" href="#typing"><b>⌨️ ฝึกพิมพ์ดีด</b><span>ฝึกพิมพ์ 5 ภาษา มีสถิติและเป้าหมายรายวัน</span></a><a class="quick-card" href="#sh-studio"><b>🎨 สตูดิโอวาดรูป</b><span>วาดภาพและส่งออกไฟล์</span></a></div>
+  view.innerHTML=pageHead('ยินดีต้อนรับ','เลือกสตูดิโอที่อยากใช้ได้เลย')+`<div class="quick-actions"><a class="quick-card" href="javascript:void(0)" onclick="openInstallModal()" style="border-left:4px solid #a8512f;background:#fdf6f2;"><b>📲 ติดตั้งแอปลงมือถือ / โหลด APK</b><span>ติดตั้งแอปบน Android / iOS หรือสร้างไฟล์ APK</span></a><a class="quick-card" href="hatafuku-studio.zip" download="hatafuku-studio.zip" style="border-left:4px solid #16a34a;background:#f0fdf4;"><b>📥 ดาวน์โหลดโปรเจกต์ (.ZIP)</b><span>ดาวน์โหลดโค้ดและไฟล์ทั้งหมด (1.2 MB) ใช้งานออฟไลน์</span></a><a class="quick-card" href="#linetheme" style="border-left:4px solid #315f53;background:#eef4f0;"><b>🎨 สตูดิโอธีม LINE</b><span>ออกแบบธีม LINE เยลลี่ 3D ดึงคำจากตัวอักษรลูกโป่ง</span></a><a class="quick-card" href="#handwriting"><b>✍️ ใบงานคัดลายมือ</b><span>กรอกข้อความเองแล้วสร้างใบงาน</span></a><a class="quick-card" href="#balloons"><b>🎈 ตัวอักษรลูกโป่ง</b><span>ทำภาพและสติกเกอร์จากข้อความ</span></a><a class="quick-card" href="#typing"><b>⌨️ ฝึกพิมพ์ดีด</b><span>ฝึกพิมพ์ 5 ภาษา มีสถิติและเป้าหมายรายวัน</span></a><a class="quick-card" href="#sh-studio"><b>🎨 สตูดิโอวาดรูป</b><span>วาดภาพและส่งออกไฟล์</span></a></div>
   <div class="dashboard-grid"><section class="panel panel-pad"><div class="section-title"><h2>🎨 สตูดิโอธีม LINE Pro</h2></div><p class="subtitle" style="margin-bottom:14px">ออกแบบธีม LINE พร้อมพรีวิวห้องแชทและรหัสผ่าน เอนจินลูกโป่ง 3D ดึงคำฮิตจากสตูดิโอลูกโป่งมาใช้ได้ใน 1 คลิก พร้อมส่งออก ZIP และภาพโปรโมท</p><div style="display:grid;gap:9px"><a class="button button-primary" href="#linetheme">🎨 เปิดสตูดิโอธีม LINE</a><a class="button button-outline" href="#balloons">🎈 ไปสร้างตัวอักษรลูกโป่งก่อน</a></div></section><section class="panel panel-pad"><div class="section-title"><h2>วาดรูป</h2></div><p class="subtitle" style="margin-bottom:14px">เปิดแกลเลอรีผืนผ้าของคุณ หรือเข้าสตูดิโอวาดรูปได้ทันที</p><div style="display:grid;gap:9px"><a class="button button-primary" href="#sh-home">🖼️ ผืนผ้าของฉัน</a><a class="button button-outline" href="#sh-studio">🎨 เปิดสตูดิโอวาดรูป</a></div></section></div>`}
 function tool(t){
   const title=t==='handwriting'?'ใบงานคัดลายมือ':'ตัวอักษรลูกโป่ง';
@@ -795,10 +795,9 @@ function render(){
   const r=route();
   document.body.classList.remove('tool-fullscreen-open');
   const fb=$('#toolFullscreen');if(fb)fb.remove();
-  document.body.classList.toggle('tool-page',r==='handwriting'||r==='balloons'||r==='sh-home'||r==='extras'||r==='typing'||r==='linetheme'||r==='aigenerator');
+  document.body.classList.toggle('tool-page',r==='handwriting'||r==='balloons'||r==='sh-home'||r==='extras'||r==='typing'||r==='linetheme');
   nav();
   if(r==='overview') overview();
-  else if(r==='aigenerator') aiGeneratorView();
   else if(SH_PAGES[r]) drawView(r);
   else tool(r);
 }
