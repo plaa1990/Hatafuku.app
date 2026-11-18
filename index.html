@@ -717,6 +717,7 @@ body.tool-page .creation-frame-wrap.is-fullscreen{height:100dvh!important}
 </div>
 <div id="toast" class="toast" role="status" hidden></div>
 <script src="./worksheet-extras.js"></script>
+<script src="./worksheet-penmanship.js"></script>
 <script src="./pg-color-fields.js"></script>
 <script src="./worksheet-free.js"></script>
 <script src="./balloon-plus.js"></script>\n<script src="./qrcode.min.js"></script>
@@ -902,7 +903,7 @@ render();
 </script>
 <script>
 (function(){
-  function inject(html,code){return patchTool(html,'\n</body>','<'+'script>'+code+'<'+'/script><'+'/body>')}
+  function inject(html,code){return patchTool(html,'\n</body>','\n<'+'script>'+code+'<'+'/script>\n</body>')}
   const worksheetCode=`
 (function(){
   const ids=['worksheetTextColor','worksheetLineColor','worksheetBlank','worksheetAddress','worksheetCardBorder','worksheetScoreBox','worksheetVertical','worksheetHiddenWords','worksheetMarginTop','worksheetMarginRight','worksheetMarginBottom','worksheetMarginLeft','worksheetRandomCount'];
@@ -995,6 +996,8 @@ render();
   $('wordsInput').addEventListener('input',()=>{if(!changingRandom)poolText=$('wordsInput').value});
   render();
 })();`;
+  /* โมดูลฝึกเขียนอังกฤษ: แทรกโดยคงบรรทัดใหม่ก่อน </body> ไว้ เพื่อไม่ให้กระทบการฝังโมดูลอื่นด้านล่าง */
+  if(typeof PG_WS_PEN==='function')TOOLS.handwriting=patchTool(TOOLS.handwriting,'\n</body>',()=>'\n<'+'script>('+PG_WS_PEN.toString()+')()<'+'/script>\n</body>');
   if(typeof PG_WS_HALF2==='function')TOOLS.handwriting=inject(TOOLS.handwriting,'('+PG_WS_HALF2.toString()+')()');
   TOOLS.handwriting=inject(TOOLS.handwriting,worksheetCode);
   if(typeof PG_WS_HALF1==='function')TOOLS.handwriting=inject(TOOLS.handwriting,'('+PG_WS_HALF1.toString()+')()');

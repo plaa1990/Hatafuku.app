@@ -1,9 +1,10 @@
-const CACHE_NAME = 'hatafuku-v58';
+const CACHE_NAME = 'hatafuku-v60';
 const APP_FILES = [
   './',
   './index.html',
   './hatafuku-theme.css',
   './worksheet-extras.js',
+  './worksheet-penmanship.js',
   './pg-color-fields.js',
   './worksheet-free.js',
   './balloon-plus.js',
