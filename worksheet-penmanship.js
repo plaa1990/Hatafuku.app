@@ -158,6 +158,20 @@ window.PG_WS_PEN = function () {
     Y: L(50, [[4, 2], [18, 32], [28, 46]], [[46, 0], [34, 34], [28, 60], [22, 86], [12, 98], [4, 90], [10, 82], [26, 76], [42, 70]]),
     Z: L(50, [[6, 4], [24, 0], [46, 4], [28, 34], [10, 64], [24, 70], [40, 68], [50, 70]])
   });
+
+  /* ตัวกลมแบบเขียนต่อเนื่อง สร้างจากวงรีสม่ำเสมอ (a c d e g o q) เพื่อให้รูปทรงสะอาดและแยกกันชัด */
+  const arc = (cx, cy, rx, ry, a0, a1) => { const o = [], n = Math.max(6, Math.round(Math.abs(a1 - a0) / 22)); for (let i = 0; i <= n; i++) { const t = (a0 + (a1 - a0) * i / n) * Math.PI / 180; o.push([+(cx + rx * Math.cos(t)).toFixed(1), +(cy - ry * Math.sin(t)).toFixed(1)]); } return o; };
+  const arcK = (...a) => { const r = arc(...a); r[0] = [r[0][0], r[0][1], 1]; return r; };
+  const ENT = [[0, 70], [8, 62], [16, 47]];
+  Object.assign(C, {
+    a: L(46, ENT.concat(arcK(20, 52.5, 14, 17.5, 62, 360), [[34, 37, 1], [34, 62], [38, 69], [46, 70]])),
+    c: L(40, ENT.concat(arcK(20, 52.5, 14, 17.5, 62, 310), [[32, 69], [40, 70]])),
+    d: L(46, ENT.concat(arcK(20, 52.5, 14, 17.5, 62, 360), [[34, 30], [36, 6], [38, 0, 1], [36, 30], [35, 62], [39, 69], [46, 70]])),
+    e: L(40, ENT.concat([[22, 40], [27, 35], [24, 31], [18, 34], [14, 41]], arc(18, 53, 12, 17, 140, 320), [[32, 69], [40, 70]])),
+    g: L(46, ENT.concat(arcK(20, 52.5, 14, 17.5, 62, 360), [[34, 70], [34, 88], [30, 98], [20, 102], [12, 98], [14, 91], [24, 82], [36, 73], [46, 70]])),
+    o: L(44, [[0, 70], [7, 60], [13, 46], [18, 38]].concat(arc(18, 52.5, 12, 17.5, 95, 440), [[26, 37], [35, 35], [44, 35]])),
+    q: L(48, ENT.concat(arcK(20, 52.5, 14, 17.5, 62, 360), [[34, 70], [34, 90], [38, 99], [46, 95], [48, 84]]))
+  });
   const getGlyph = (ch, st) => {
     if (E[ch]) return E[ch];
     if (st.cursive && C[ch]) return C[ch];
@@ -217,7 +231,7 @@ window.PG_WS_PEN = function () {
    * คืน {guide, over, w, strokes} — guide = ตัวเส้น, over = เลขลำดับ/ลูกศร */
   function drawGlyph(def, x0, base, s, st, o) {
     const t = Math.tan((st.slant || 0) * Math.PI / 180);
-    const tr = p => [x0 + (p[0] - t * (p[1] - 70)) * s, base + (p[1] - 70) * s];
+    const xs = st.xs || 1, tr = p => [x0 + (p[0] * xs - t * (p[1] - 70)) * s, base + (p[1] - 70) * s];
     const col = o.color, sw = o.sw;
     let guide = '', over = '';
     const strokes = def.s.map(pts => {
@@ -255,7 +269,7 @@ window.PG_WS_PEN = function () {
         over += '<path d="M' + f2(q[0] + c * a) + ' ' + f2(q[1] + n * a) + 'L' + f2(q[0] - c * a * .55 - n * a * .8) + ' ' + f2(q[1] - n * a * .55 + c * a * .8) + 'L' + f2(q[0] - c * a * .55 + n * a * .8) + ' ' + f2(q[1] - n * a * .55 - c * a * .8) + 'Z" fill="' + ac + '"/>';
       }
     });
-    return { guide, over, w: def.w * s, strokes };
+    return { guide, over, w: def.w * s * (st.xs || 1), strokes };
   }
 
   /* จุดออก (ไว้ต่อเส้นเชื่อมแบบ cursive) */
@@ -442,11 +456,11 @@ window.PG_WS_PEN = function () {
         if (useNums) go.rb = Math.max(.95, Math.min(1.5, 9 * s));
         const g = drawGlyph(def, x, base, s, st, go);
         parts.g += op != null ? '<g opacity="' + op + '">' + g.guide + '</g>' : g.guide; parts.o += g.over;
-        const nx = x + def.w * s; let hiExit = 0;
+        const xs = st.xs || 1, nx = x + def.w * s * xs; let hiExit = 0;
         if (st.cursive && ci < chars.length - 1) {
           const nd = getGlyph(chars[ci + 1], st), po = outPoint(def);
           if (nd && C[chars[ci + 1]] && C[c]) {
-            const t = Math.tan(st.slant * Math.PI / 180), tr = (px, py) => [x + (px - t * (py - 70)) * s, base + (py - 70) * s];
+            const t = Math.tan(st.slant * Math.PI / 180), tr = (px, py) => [x + (px * xs - t * (py - 70)) * s, base + (py - 70) * s];
             const high = po[1] < 52, low = Math.abs(po[1] - 70) > 3;
             if (high || low) {
               let tx = def.w + 14, ty = 70;
@@ -459,7 +473,7 @@ window.PG_WS_PEN = function () {
             }
           }
         }
-        x = nx + (st.cursive ? hiExit * s : 4 * s);
+        x = nx + (st.cursive ? hiExit * s * xs : 4 * s);
       });
       x += wordGap * s; skip = false;
     });
@@ -474,9 +488,9 @@ window.PG_WS_PEN = function () {
     const { uw, uh } = paper();
     const secs = [['UPPERCASE ALPHABET', 2], ['LOWERCASE ALPHABET', 2], ['NUMBERS', 1], ['BASIC STROKES', 1], ['COMMON CONNECTIONS', 2], ['WORDS PRACTICE', 2], ['SENTENCE PRACTICE', 6]];
     const labH = 5.4, tipH = 7, nRows = secs.reduce((a, x) => a + x[1], 0);
-    const rh = (uh - secs.length * labH - tipH - 2) / nRows, s0 = rh * .0072;
+    const rh = (uh - secs.length * labH - tipH - 2) / nRows, s0 = rh * .0086;
     const ink = Object.assign({}, st, { nums: false });
-    const base0 = rh * .72;
+    const base0 = rh * .66;
     let y = 0, out = '';
     const rowRule = (top, s) => ruling(o.ruling === 'none' ? 'none' : '3', 0, uw, top + base0, s);
     const lab = t => { out += '<text x="0" y="' + f2(y + 3.6) + '" font-size="2.5" letter-spacing=".35" font-family="Arial,Helvetica,sans-serif" fill="#4b5563">' + t + '</text>'; y += labH; };
@@ -486,7 +500,8 @@ window.PG_WS_PEN = function () {
       list.forEach((ch, i) => { const d = getGlyph(ch, st); if (!d) return; const r = drawGlyph(d, i * cw + (cw - d.w * s0) / 2, top + base0, s0, st, gopt()); g += r.guide; });
       return g;
     };
-    const measure = (words) => words.reduce((a, w) => a + [...w].reduce((b, c) => b + ((getGlyph(c, st) || { w: 20 }).w + (st.cursive ? 12 : 4)), 0) + 28, 0);
+    const stW = Object.assign({}, st, { xs: st.cursive ? .86 : 1 }), stS = Object.assign({}, st, { xs: st.cursive ? .78 : .9 });
+    const measure = (words, xs) => words.reduce((a, w) => a + [...w].reduce((b, c) => b + ((getGlyph(c, st) || { w: 20 }).w + (st.cursive ? 12 : 4)) * (xs || 1), 0) + 28, 0);
     secs.forEach(([name, rows]) => {
       lab(name);
       for (let r = 0; r < rows; r++) {
@@ -507,16 +522,16 @@ window.PG_WS_PEN = function () {
         } else if (name === 'COMMON CONNECTIONS') {
           const pairs = r ? 'nr or pr qr rr sr tr ur vr wr xr yr zr'.split(' ') : 'ar br cr dr er fr gr hr ir jr kr lr mr'.split(' ');
           const cw = uw / pairs.length; let g = '';
-          pairs.forEach((pr, i) => { g += drawRow([pr], i * cw + 2, top + base0, s0, st, 'model', null, Object.assign({}, o, { wnums: false, warrows: false, dots: false }), 28, true).g; });
+          pairs.forEach((pr, i) => { g += drawRow([pr], i * cw + 2, top + base0, s0, stW, 'model', null, Object.assign({}, o, { wnums: false, warrows: false, dots: false }), 28, true).g; });
           body += g;
         } else if (name === 'WORDS PRACTICE') {
           const list = SHEET_WORDS.slice(r * 6, r * 6 + 6), cw = uw / 6; let g = '';
-          list.forEach((w, i) => { const sw2 = Math.min(s0, (cw - 4) / measure([w])); g += drawRow([w], i * cw + 2, top + base0, sw2, st, 'model', null, Object.assign({}, o, { wnums: false, warrows: false, dots: false }), 28, true).g; });
+          list.forEach((w, i) => { const sw2 = Math.min(s0, (cw - 4) / measure([w], stW.xs)); g += drawRow([w], i * cw + 2, top + base0, sw2, stW, 'model', null, Object.assign({}, o, { wnums: false, warrows: false, dots: false }), 28, true).g; });
           body += g;
         } else {
-          const sentence = SHEET_SENT[r], units = measure(sentence.split(' ')), sf = Math.min(s0 * 1.05, (uw - 4) / units);
-          body = ruling(o.ruling === 'none' ? 'none' : '3', 0, uw, top + base0, sf * 1.4);
-          body += drawRow(sentence.split(' '), 2, top + base0, sf, st, 'model', null, Object.assign({}, o, { wnums: false, warrows: false, dots: false }), 28, true).g;
+          const sentence = SHEET_SENT[r], units = measure(sentence.split(' '), stS.xs), sf = Math.min(s0 * 1.3, (uw - 4) / units);
+          body = ruling(o.ruling === 'none' ? 'none' : '3', 0, uw, top + base0, Math.max(sf, s0 * .8) * 1.2);
+          body += drawRow(sentence.split(' '), 2, top + base0, sf, stS, 'model', null, Object.assign({}, o, { wnums: false, warrows: false, dots: false }), 28, true).g;
         }
         out += body; y += rh;
       }
